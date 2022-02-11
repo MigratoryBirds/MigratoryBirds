@@ -79,7 +79,7 @@ save_html_file('cluster_SnapsRasps_with_range.html', fig)
 
 df = df.drop(columns=['Date_trial','Date_nest_found'])
 df.index = np.arange(len(df['Rasps']))
-print(df.index)
+
 df.to_csv('resources/generated_data/check.csv')
 fig2 = px.parallel_coordinates(data_frame=df, color=df['ClusterID'], color_continuous_scale=px.colors.diverging.Earth)
 fig2.write_html('resources/visualisations/clusterData.html', auto_open=True)
