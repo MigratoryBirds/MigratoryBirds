@@ -10,6 +10,7 @@ import pandas as pd
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import StratifiedKFold, train_test_split
 from sklearn.metrics import confusion_matrix
+import warnings
 
 
 def split_in_folds_regression(df: pd.DataFrame, n, target_feature):
@@ -88,9 +89,11 @@ def plot_confusion_matrix(actual, predicted, labels, fig_name):
 
 
 def perplexity(y_pred, y_test, positive_label):
-    tmp = [
-        y_pred[i] if y_test[i] == positive_label
-        else 1 - y_pred[i]
-        for i in range(len(y_pred))
-    ]
-    return np.exp(-np.mean(np.log(tmp)))
+    with warnings.catch_warnings():
+        warnings.filterwarnings("ignore")
+        tmp = [
+            y_pred[i] if y_test[i] == positive_label
+            else 1 - y_pred[i]
+            for i in range(len(y_pred))
+        ]
+        return np.exp(-np.mean(np.log(tmp)))
