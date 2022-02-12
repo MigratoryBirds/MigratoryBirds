@@ -11,7 +11,7 @@ import numpy as np
 
 df = pd.read_csv(
     'resources/original_data/FinlandNestDatafile.csv', index_col='NestID'
-)['lat long'.split()]
+)['lat long Year'.split()]
 df['x'], df['y'], df['z'] \
     = geographic_to_cartesian(df['lat'], df['long'], EARTH_RADIUS)
 
@@ -23,6 +23,8 @@ for row in df.iterrows():
     index = row[0]
     row = row[1]
     df_without_nest = df.drop(index)
+    # only consider nests built this year
+    df_without_nest = df_without_nest[df_without_nest['Year'] == row['Year']]
     distances = euclidean(
         row['x y z'.split()].values, df_without_nest['x y z'.split()].values
     )
@@ -33,6 +35,6 @@ for row in df.iterrows():
 
 (
     df
-    .drop(columns='lat long'.split())
+    .drop(columns='lat long Year'.split())
     .to_csv('resources/generated_data/nearby_nests.csv')
 )
