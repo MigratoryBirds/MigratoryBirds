@@ -17,29 +17,9 @@ EARTH_RADIUS = 6378000  # meters
 import sys
 sys.path.append('src/')
 from utils.minmax_matrix import MinMaxMatrix
+from utils.math_utils import geographic_to_cartesian, euclidean
 import pandas as pd
 import numpy as np
-
-df = pd.read_csv(
-    'resources/original_data/FinlandNestDatafile.csv', index_col='NestID'
-)
-
-
-def add_cartesian_to_geographic(
-    df: pd.DataFrame, earth_radius: float
-) -> pd.DataFrame:
-    cos_lat = np.cos(df['lat'].map(np.radians))
-    cos_lon = np.cos(df['long'].map(np.radians))
-    sin_lat = np.sin(df['long'].map(np.radians))
-    sin_lon = np.sin(df['lat'].map(np.radians))
-    df['x'] = earth_radius * cos_lat * cos_lon
-    df['y'] = earth_radius * cos_lat * sin_lon
-    df['z'] = earth_radius * sin_lat
-    return df
-
-
-def euclidean(p1: tuple, p2: tuple) -> float:
-    return np.sqrt(sum([(x1 - x2) ** 2 for x1, x2 in zip(p1, p2)]))
 
 
 def get_cluster_mean(
@@ -76,7 +56,12 @@ def create_distance_matrix(
     return distance_matrix, cluster_id_to_index_1, cluster_id_to_index_2
 
 
-df = add_cartesian_to_geographic(df, EARTH_RADIUS)
+df = pd.read_csv(
+    'resources/original_data/FinlandNestDatafile.csv', index_col='NestID'
+)
+df['x'], df['y'], df['z'] \
+    = geographic_to_cartesian(df['lat'], df['long'], EARTH_RADIUS)
+
 
 next_cluster_id = 0
 year_to_clusters = {}
