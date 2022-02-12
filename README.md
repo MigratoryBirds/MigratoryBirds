@@ -27,22 +27,15 @@ $ conda install folium -c conda-forge
 ```
 For plotly installation instructors can be found [here](https://plotly.com/python/getting-started/).
 
-Data must be generated first by running data\_wrangling.py in code/data\_wrangling directory.
+NB: In some cases yuor `python` command might be `python3` or alike.
 
-// Needs still modifications that one can run it both with unix and windows.
-
-`code/data\_wrangling directory$ python3 run data\_wrangling.py`
-
-Move then back to root of the repository.
-
-`code/data\_wrangling directory$ cd ../..`
+Data must be generated first by 
+`$ python src/data_wrangling/join_datasets.py`
 
 Create clustering data
 
 `$ python src/data_wrangling/clustering.py`
 
-Finally create visualisations with attribute `unix` or `windows` depending on your operation system
+Finally create visualisations
 
-`$ python3 src/visualisation/cluster_visual.py <your_os>`
-
-// Should be still tested for windows files
+`$ python src/visualisation/cluster_visual.py`
