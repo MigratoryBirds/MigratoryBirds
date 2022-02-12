@@ -1,3 +1,7 @@
+"""
+This module contains general mathematical helper functions
+"""
+
 import numpy as np
 import pandas as pd
 
