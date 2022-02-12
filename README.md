@@ -10,6 +10,7 @@ Project for DSP2022 - Data Science Project I - Detecting micro and macro spatial
 
 1. Put data csv files in resources/data/original
 1. Run data\_wrangling/clustering.py
+1. Run data\_wrangling/nearby\_nests.py
 
 Please note that all scripts must be run from the root repository. For example, if we want to run the clustering phase, we would run `python src/data_wrangling/clustering.py`
 
@@ -29,7 +30,7 @@ For plotly installation instructors can be found [here](https://plotly.com/pytho
 
 NB: In some cases yuor `python` command might be `python3` or alike.
 
-Data must be generated first by 
+Data must be generated first by
 `$ python src/data_wrangling/join_datasets.py`
 
 Create clustering data
