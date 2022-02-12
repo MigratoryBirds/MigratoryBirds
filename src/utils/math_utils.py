@@ -2,6 +2,9 @@ import numpy as np
 import pandas as pd
 
 
+EARTH_RADIUS = 6378000  # meters
+
+
 def geographic_to_cartesian(
     lat: float, lon: float, earth_radius: float
 ) -> pd.DataFrame:
@@ -15,5 +18,5 @@ def geographic_to_cartesian(
     return (x, y, z)
 
 
-def euclidean(p1: tuple[float], p2: tuple[float]) -> float:
-    return np.sqrt(sum([(x1 - x2) ** 2 for x1, x2 in zip(p1, p2)]))
+def euclidean(p1: np.ndarray, p2: np.ndarray) -> np.ndarray:
+    return np.sqrt(np.sum((p1 - p2) ** 2, axis=1).astype('float'))
