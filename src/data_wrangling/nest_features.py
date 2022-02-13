@@ -19,12 +19,16 @@ nearby_nests = pd.read_csv(
     'resources/generated_data/nearby_nests.csv', index_col='NestID'
 )
 
+map_features = pd.read_csv(
+    'resources/generated_data/map_features.csv', index_col='NestID'
+)
+
 for dist in CLUSTER_DISTANCES:
     clusters[f'ClusterSize_{dist}'] = [
         sum(clusters[f'ClusterID_{dist}'] == cid)
         for cid in clusters[f'ClusterID_{dist}']
     ]
 
-df = nests.join(clusters, how="inner").join(nearby_nests)
+df = nests.join(clusters, how="inner").join(nearby_nests).join(map_features)
 
 df.to_csv('resources/generated_data/nest_features.csv')

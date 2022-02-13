@@ -4,6 +4,7 @@ Project for DSP2022 - Data Science Project I - Detecting micro and macro spatial
 ## Installation Instructions
 
 * You must have python3.9 or higher installed
+* (Folium)[https://python-visualization.github.io/folium/installing.html] and [Plotly](https://plotly.com/python/getting-started/) must be installed for visualisation.
 
 
 ## Instructions for running
@@ -18,27 +19,15 @@ Please note that all scripts must be run from the root repository. For example, 
 
 ### Before running the visualisation.py
 
-Libraries folium and plotly must be installed.
+NB: In some cases you need to use `python3` (or alike) instead of `python`.
 
-Folium can be installed with following commands
-```
-$ pip3 install folium
-```
-or
-```
-$ conda install folium -c conda-forge
-```
-For plotly installation instructors can be found [here](https://plotly.com/python/getting-started/).
-
-NB: In some cases yuor `python` command might be `python3` or alike.
-
-Data must be generated first by
+1. Generate data
 `$ python src/data_wrangling/join_datasets.py`
 
-Create clustering data
+2. Create clustering data
 
 `$ python src/data_wrangling/clustering.py`
 
-Finally create visualisations
+3. Create visualisations
 
 `$ python src/visualisation/cluster_visual.py`
