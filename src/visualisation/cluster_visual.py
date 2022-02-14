@@ -18,11 +18,11 @@ df_location_data = pd.read_csv(
 )
 
 def generate_nest_info(general_data: pd.DataFrame, nests: pd.DataFrame) -> list:
-    return [{'ID': nestID, 'Rasps': general_data.loc[nestID]['Rasps'], 
+    return ([{'ID': nestID, 'Rasps': general_data.loc[nestID]['Rasps'], 
         'Bill_snaps': general_data.loc[nestID]['Bill_snaps'],
         'SnapsRasps':general_data.loc[nestID]['SnapsRasps'], 
         'Propensity':general_data.loc[nestID]['Propensity']} 
-        if nestID in general_data.index else nestID for nestID in nests.index.values]
+        if nestID in general_data.index else nestID for nestID in nests.index.values])
 
 def create_circleMarker(year: int, number_nests: int, df_nests: pd.DataFrame,nest_info:list, color:str, map: folium.Map):
     folium.CircleMarker(
@@ -45,7 +45,7 @@ COLORS5 = ['#e00d06','#063de0','#dd1cb7','#580f70','#313695']
 # Basic cluster map with folium
 lat_coord = (max(df_location_data['lat']) + min(df_location_data['lat']))/2
 long_coord = (max(df_location_data['long']) + min(df_location_data['long']))/2
-cluster_dist= [15,30,50,100,200]
+cluster_dist= [15,30,50,100,200,300]
 for dist in cluster_dist:
   map = folium.Map(location=[lat_coord, long_coord], default_zoom_start=15)
   year_color_index = 0
@@ -67,12 +67,13 @@ df_info = df_general_data.drop(columns=['Year', 'Model', 'Laydate_first_egg',
 df_info_and_clusters = (pd.merge(df_info, df_clusters, left_on='NestID', right_on='NestID')
     .sort_values(by=['Year','Date_nest_found']))
 
-df_15 = df_info_and_clusters.drop(columns=['ClusterID_30','ClusterID_50','ClusterID_100','ClusterID_200'])
-df_30 = df_info_and_clusters.drop(columns=['ClusterID_15','ClusterID_50','ClusterID_100','ClusterID_200'])
-df_50 = df_info_and_clusters.drop(columns=['ClusterID_30','ClusterID_15','ClusterID_100','ClusterID_200'])
-df_100 = df_info_and_clusters.drop(columns=['ClusterID_30','ClusterID_50','ClusterID_15','ClusterID_200'])
-df_200 = df_info_and_clusters.drop(columns=['ClusterID_30','ClusterID_50','ClusterID_100','ClusterID_15'])
-cluster_dfs = [df_15,df_30,df_50,df_100,df_200]
+df_15 = df_info_and_clusters.drop(columns=['ClusterID_30','ClusterID_50','ClusterID_100','ClusterID_200','ClusterID_300'])
+df_30 = df_info_and_clusters.drop(columns=['ClusterID_15','ClusterID_50','ClusterID_100','ClusterID_200','ClusterID_300'])
+df_50 = df_info_and_clusters.drop(columns=['ClusterID_30','ClusterID_15','ClusterID_100','ClusterID_200','ClusterID_300'])
+df_100 = df_info_and_clusters.drop(columns=['ClusterID_30','ClusterID_50','ClusterID_15','ClusterID_200','ClusterID_300'])
+df_200 = df_info_and_clusters.drop(columns=['ClusterID_30','ClusterID_50','ClusterID_100','ClusterID_15','ClusterID_300'])
+df_300 = df_info_and_clusters.drop(columns=['ClusterID_30','ClusterID_50','ClusterID_100','ClusterID_200','ClusterID_15'])
+cluster_dfs = [df_15,df_30,df_50,df_100,df_200,df_300]
 index = 0
 for df in cluster_dfs:
     fig = px.scatter(x=df['Date_nest_found'], y= df[f'ClusterID_{cluster_dist[index]}'], color=df[f'ClusterID_{cluster_dist[index]}'])
@@ -94,11 +95,11 @@ for df in cluster_dfs:
     df = df.drop(columns=['Date_trial','Date_nest_found'])
     df.index = np.arange(len(df['Rasps']))
 
-    fig2 = px.parallel_coordinates(data_frame=df, color=df[f'ClusterID_{cluster_dist[index]}'], color_continuous_scale=px.colors.diverging.Earth)
+    fig = px.parallel_coordinates(data_frame=df, color=df[f'ClusterID_{cluster_dist[index]}'], color_continuous_scale=px.colors.diverging.Earth)
     save_html_file(f'cluster_data_plot_{cluster_dist[index]}.html', fig)
 
     df = df.drop(columns=['Bill_snaps', 'Rasps'])
-    fig3 = px.parallel_coordinates(data_frame=df,  color=df[f'ClusterID_{cluster_dist[index]}'], color_continuous_scale=px.colors.diverging.Earth)
+    fig = px.parallel_coordinates(data_frame=df,  color=df[f'ClusterID_{cluster_dist[index]}'], color_continuous_scale=px.colors.diverging.Earth)
     save_html_file(f'cluster_data_plot2_{cluster_dist[index]}.html', fig)
 
     # Create dataframe for clustermaps with and without animation.
