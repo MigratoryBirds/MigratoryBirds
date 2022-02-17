@@ -19,12 +19,12 @@ nearby_nests = pd.read_csv(
     'resources/generated_data/nearby_nests.csv', index_col='NestID'
 )
 
-for dist in CLUSTER_DISTANCES:
-    clusters[f'ClusterSize_{dist}'] = [
-        sum(clusters[f'ClusterID_{dist}'] == cid)
-        for cid in clusters[f'ClusterID_{dist}']
-    ]
-
 df = nests.join(clusters, how="inner").join(nearby_nests)
+
+for dist in CLUSTER_DISTANCES:
+    df[f'ClusterSize_{dist}'] = [
+        sum((df[f'ClusterID_{dist}'] == cid) & (df['Year'] == year))
+        for cid, year in zip(df[f'ClusterID_{dist}'], df['Year'])
+    ]
 
 df.to_csv('resources/generated_data/nest_features.csv')
