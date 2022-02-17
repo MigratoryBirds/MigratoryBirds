@@ -13,13 +13,16 @@ nests = nests.set_index('NestID')
 
 clusters = pd.read_csv(
     'resources/generated_data/clusters.csv', index_col='NestID'
-).drop(columns=['Year'])
+)
 
 nearby_nests = pd.read_csv(
     'resources/generated_data/nearby_nests.csv', index_col='NestID'
 )
+map_features = pd.read_csv(
+    'resources/generated_data/map_features.csv', index_col='NestID'
+)
 
-df = nests.join(clusters, how="inner").join(nearby_nests)
+df = clusters.join(nearby_nests)
 
 for dist in CLUSTER_DISTANCES:
     df[f'ClusterSize_{dist}'] = [
@@ -27,4 +30,5 @@ for dist in CLUSTER_DISTANCES:
         for cid, year in zip(df[f'ClusterID_{dist}'], df['Year'])
     ]
 
+df = df.join(nests.drop('Year', axis=1), how="inner").join(map_features)
 df.to_csv('resources/generated_data/nest_features.csv')
