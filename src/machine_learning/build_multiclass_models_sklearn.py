@@ -13,7 +13,7 @@ from utils import \
 from build_models_sklearn_template import \
     BuildModelsSklearnTemplate
 from sklearn.metrics import \
-    accuracy_score, f1_score, precision_score, recall_score
+    accuracy_score, f1_score, precision_score, recall_score, roc_auc_score
 import numpy as np
 from sklearn.decomposition import PCA
 np.random.seed(42)
@@ -31,6 +31,7 @@ class BuildMulticlassModelsSklearn(BuildModelsSklearnTemplate):
         tuning_iterations: int = 20,
         pca=False,
         positive_label: Any = 1,
+        columns_to_scale: list[str] = [],
     ):
         BuildModelsSklearnTemplate.__init__(
             self,
@@ -40,18 +41,21 @@ class BuildMulticlassModelsSklearn(BuildModelsSklearnTemplate):
             output_file_name,
             train_folds=train_folds,
             tuning_iterations=tuning_iterations,
-            positive_label=positive_label
+            positive_label=positive_label,
         )
         self.columns_to_drop = columns_to_drop
         self.pca = pca
+        self.columns_to_scale = columns_to_scale
 
     def _do_at_init(self) -> None:
         self.df_train.drop(columns=self.columns_to_drop, inplace=True)
         self.df_test.drop(columns=self.columns_to_drop, inplace=True)
 
     def _do_preprocessing(self) -> None:
-        self.x_train, self.x_test \
-            = scale_features(self.x_train, self.x_test, self.x_test.columns)
+        self.x_train, self.x_test = scale_features(
+            self.x_train, self.x_test, self.columns_to_scale
+        )
+        BuildModelsSklearnTemplate._do_preprocessing(self)
         self.x_train, self.x_test \
             = self.x_train.values, self.x_test.values
         if self.pca:
@@ -99,7 +103,7 @@ class BuildMulticlassModelsSklearn(BuildModelsSklearnTemplate):
         )
         print_stdout_and_file(
             '\t\t\tmacro recall on test: '
-            f'{recall_score(self.y_test.values, test_predictions, average="micro", zero_division=0)}',
+            f'{recall_score(self.y_test.values, test_predictions, average="macro", zero_division=0)}',
             self.file_pointer
         )
         print_stdout_and_file(
@@ -173,6 +177,11 @@ class BuildMulticlassModelsSklearn(BuildModelsSklearnTemplate):
             f'{perplexity(test_predictions_proba, binary_y_test_predicted, self.positive_label)}',
             self.file_pointer
         )
+        print_stdout_and_file(
+            '\t\t\tbinary roc_auc_score test: '
+            f'{roc_auc_score(binary_y_test_actual, binary_y_test_predicted)}',
+            self.file_pointer
+        )
         plot_confusion_matrix(
             self.y_test.values,
             test_predictions,
@@ -193,10 +202,10 @@ process = BuildMulticlassModelsSklearn(
     ),
     columns_to_drop=[
         'NestID',
+        'Year',
         'Laydate_first_egg',
         'Date_trial',
         'Days_from_LD',
-        'Model',
         'Rasps',
         'Bill_snaps',
         'SnapsRasps',
@@ -214,6 +223,36 @@ process = BuildMulticlassModelsSklearn(
         'ClusterID_100',
         'ClusterID_200',
         'ClusterID_300',
+    ],
+    columns_to_scale=[
+        'x',
+        'y',
+        'z',
+        'nests_nearby_15',
+        'nests_nearby_30',
+        'nests_nearby_50',
+        'nests_nearby_100',
+        'nests_nearby_200',
+        'nests_nearby_300',
+        'closest_nest_distance',
+        'ClusterSize_15',
+        'ClusterSize_30',
+        'ClusterSize_50',
+        'ClusterSize_100',
+        'ClusterSize_200',
+        'ClusterSize_300',
+        'ShyBirdsPercentage_Clusters_15',
+        'ShyBirdsPercentage_Clusters_30',
+        'ShyBirdsPercentage_Clusters_50',
+        'ShyBirdsPercentage_Clusters_100',
+        'ShyBirdsPercentage_Clusters_200',
+        'ShyBirdsPercentage_Clusters_300',
+        'ShyBirdsPercentage_Nearby_15',
+        'ShyBirdsPercentage_Nearby_30',
+        'ShyBirdsPercentage_Nearby_50',
+        'ShyBirdsPercentage_Nearby_100',
+        'ShyBirdsPercentage_Nearby_200',
+        'ShyBirdsPercentage_Nearby_300',
     ],
     train_folds=5,
     tuning_iterations=20,

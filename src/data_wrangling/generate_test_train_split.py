@@ -7,13 +7,28 @@ import sys
 sys.path.append('src')
 import numpy as np
 import pandas as pd
-from machine_learning.utils import get_stratified_train_test_folds
+from machine_learning.utils import \
+    get_stratified_train_test_folds, one_hot_encode_and_bind
 np.random.seed(42)
+
+features_to_one_hot_encode = [
+    'Model',
+    'Shape',
+    'Nearby',
+    'Water_area',
+]
+
+
+def one_hot_encode(df: pd.DataFrame, columns: list[str]) -> None:
+    for col in features_to_one_hot_encode:
+        df = one_hot_encode_and_bind(df, col)
+    return df
 
 
 df = pd.read_csv('resources/generated_data/nest_features.csv')
+df = one_hot_encode(df, features_to_one_hot_encode)
 train_df, test_df = \
-    get_stratified_train_test_folds(df, 'Propensity', test_factor=0.2)
+    get_stratified_train_test_folds(df, 'Propensity', test_factor=0.3)
 train_df.to_csv(
     'resources/generated_data/nest_features_train.csv', index=False
 )

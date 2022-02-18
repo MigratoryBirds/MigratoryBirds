@@ -33,7 +33,7 @@ class BuildModelsSklearnTemplate:
         output_file_name: str,
         train_folds: int = 5,
         tuning_iterations: int = 20,
-        positive_label: Any = 1
+        positive_label: Any = 1,
     ):
         self.file_pointer = open(output_file_name, 'w')
         self.df_train = pd.read_csv(input_train_csv_file_name)
@@ -42,53 +42,6 @@ class BuildModelsSklearnTemplate:
         self.train_folds = train_folds
         self.tuning_iterations = tuning_iterations
         self.positive_label = positive_label
-
-    def _do_at_init(self) -> None:
-        pass
-
-    def _initialize_train_test_split(self) -> None:
-        self.x_train, self.y_train \
-            = extract_target_feature(self.df_train, self.target_column)
-        print(self.x_train.columns)
-        self.x_test, self.y_test \
-            = extract_target_feature(self.df_test, self.target_column)
-
-    def _do_preprocessing(self) -> None:
-        pass
-
-    def _initialize_folds(self) -> None:
-        self.folds = split_in_folds_classification(
-            self.df_train, self.train_folds, self.target_column
-        )
-
-    def _tune_model(
-        self,
-        model: sklearn.base.BaseEstimator,
-        set_parameters: dict,
-        hyper_parameters: dict,
-    ) -> dict:
-        tuner = RandomizedSearchCV(
-            model,
-            hyper_parameters,
-            refit=False,
-            n_iter=20,
-        )
-        with warnings.catch_warnings():
-            warnings.filterwarnings("ignore", category=UserWarning)
-            tuner.fit(self.x_train, self.y_train)
-        return tuner.best_params_ | set_parameters
-
-    def _train_model(
-        self, model: sklearn.base.BaseEstimator, parameters: dict
-    ) -> sklearn.base.BaseEstimator:
-        classifier = model['class'](**parameters)
-        classifier.fit(self.x_train, self.y_train)
-        return classifier
-
-    def _do_print_evaluations(
-        self, train_predictions: list, test_predictions: list
-    ) -> None:
-        pass
 
     def compute(self) -> None:
         self._do_at_init()
@@ -130,3 +83,54 @@ class BuildModelsSklearnTemplate:
                 test_predictions_proba,
             )
         self.file_pointer.close()
+
+    def _do_at_init(self) -> None:
+        pass
+
+    def _initialize_train_test_split(self) -> None:
+        self.x_train, self.y_train \
+            = extract_target_feature(self.df_train, self.target_column)
+        self.x_test, self.y_test \
+            = extract_target_feature(self.df_test, self.target_column)
+
+    def _do_preprocessing(self) -> None:
+        pass
+
+    def _initialize_folds(self) -> None:
+        self.folds = split_in_folds_classification(
+            self.df_train, self.train_folds, self.target_column
+        )
+
+    def _tune_model(
+        self,
+        model: sklearn.base.BaseEstimator,
+        set_parameters: dict,
+        hyper_parameters: dict,
+    ) -> dict:
+        tuner = RandomizedSearchCV(
+            model,
+            hyper_parameters,
+            refit=False,
+            n_iter=20,
+        )
+        with warnings.catch_warnings():
+            warnings.filterwarnings("ignore", category=UserWarning)
+            tuner.fit(self.x_train, self.y_train)
+        return tuner.best_params_ | set_parameters
+
+    def _train_model(
+        self, model: sklearn.base.BaseEstimator, parameters: dict
+    ) -> sklearn.base.BaseEstimator:
+        classifier = model['class'](**parameters)
+        classifier.fit(self.x_train, self.y_train)
+        return classifier
+
+    def _do_print_evaluations(
+        self,
+        train_predictions: list,
+        test_predictions: list,
+        model_name: str,
+        train_predictions_proba: list,
+        test_predictions_proba: list,
+    ) -> None:
+        pass
