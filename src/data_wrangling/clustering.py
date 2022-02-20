@@ -60,6 +60,12 @@ if __name__ == '__main__':
     df = pd.read_csv(
         'resources/original_data/FinlandNestDatafile.csv', index_col='NestID'
     )
+    df2 = pd.read_csv(
+        'resources/original_data/Finland_nestdata2021_mod.csv', index_col='NestID'
+    )
+    df2['Year'] = 2021
+    df = pd.concat([df,df2])
+    print(df)
     df['x'], df['y'], df['z'] \
         = geographic_to_cartesian(df['lat'], df['long'], EARTH_RADIUS)
 
