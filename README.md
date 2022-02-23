@@ -4,7 +4,7 @@ Project for DSP2022 - Data Science Project I - Detecting micro and macro spatial
 ## Installation Instructions
 
 * You must have python3.9 or higher installed
-* (Folium)[https://python-visualization.github.io/folium/installing.html] and [Plotly](https://plotly.com/python/getting-started/) must be installed for visualisation.
+* [Folium](https://python-visualization.github.io/folium/installing.html) and [Plotly](https://plotly.com/python/getting-started/) must be installed for visualisation.
 
 
 ## Instructions for running
