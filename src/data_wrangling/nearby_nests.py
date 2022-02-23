@@ -9,9 +9,15 @@ from utils.math_utils import geographic_to_cartesian, euclidean, EARTH_RADIUS
 import pandas as pd
 import numpy as np
 
-df = pd.read_csv(
+df1 = pd.read_csv(
     'resources/original_data/FinlandNestDatafile.csv', index_col='NestID'
 )['lat long Year'.split()]
+df2 = pd.read_csv(
+    'resources/original_data/Finland_nestdata2021_mod.csv', index_col='NestID'
+)
+df2['Year'] = 2021
+df2 = df2['lat long Year'.split()]
+df = pd.concat([df1, df2])
 df['x'], df['y'], df['z'] \
     = geographic_to_cartesian(df['lat'], df['long'], EARTH_RADIUS)
 

@@ -223,6 +223,9 @@ process = BuildMulticlassModelsSklearn(
         'ClusterID_100',
         'ClusterID_200',
         'ClusterID_300',
+        # 'Shape',
+        # 'Nearby',
+        # 'Water_area',
     ],
     columns_to_scale=[
         'x',
