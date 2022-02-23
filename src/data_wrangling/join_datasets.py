@@ -4,12 +4,12 @@ import pandas as pd
 dataframe_mobbing_1 = pd.read_csv(
     "resources/original_data/FinlandMobbingDatafile.csv"
 ).drop(
-    'Year Site'.split(), axis=1, inplace=True
+    'Year Site'.split(), axis=1
 )
 dataframe_mobbing_2 = pd.read_csv(
     "resources/original_data/Finland_ExperimentData2021_mod.csv"
 ).drop(
-    'Year lat long Site Cuckoo_perch'.split(), axis=1, inplace=True
+    'Year lat long Site Cuckoo_perch'.split(), axis=1
 )
 dataframe_location_1 = pd.read_csv(
     "resources/original_data/FinlandNestDatafile.csv"
@@ -30,6 +30,5 @@ data_2 = pd.merge(
     left_on='NestID',
     right_on='NestID'
 )
-
 data = pd.concat([data_1, data_2])
 data.to_csv("resources/generated_data/joined_dataset.csv", index=False)
