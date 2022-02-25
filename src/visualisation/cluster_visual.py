@@ -27,7 +27,8 @@ def generate_nest_info(general_data: pd.DataFrame, nests: pd.DataFrame) -> list:
     return ([{'ID': nestID, 'Rasps': general_data.loc[nestID]['Rasps'], 
         'Bill_snaps': general_data.loc[nestID]['Bill_snaps'],
         'SnapsRasps':general_data.loc[nestID]['SnapsRasps'], 
-        'Propensity':general_data.loc[nestID]['Propensity']} 
+        'Propensity':general_data.loc[nestID]['Propensity'],
+        'Site':general_data.loc[nestID]['Site']} 
         if nestID in general_data.index else nestID for nestID in nests.index.values])
 
 def generate_cluster_info(cluster: int, year: int, general_data: pd.DataFrame, 
@@ -66,7 +67,7 @@ cluster_size_data  = pd.DataFrame(columns=['ClusterID', 'Year', 'Dist', 'Site',
     'Nests_with_data','All_nests','Total_angrybirds'])
 
 for dist in cluster_dist:
-    map = folium.Map(location=[lat_coord, long_coord], default_zoom_start=15)
+    map = folium.Map(location=[lat_coord, long_coord], default_zoom_start=15, control_scale=True)
     year_color_index = 0
     years = df_clusters['Year'].unique()
     for year in years:
@@ -153,7 +154,7 @@ plt.rc('legend', fontsize=18)
 plt.rc('figure', titlesize=20)
 for year in years:
     fig, ax1 = plt.subplots()
-    #plt.title('Attacks and Sizes of the Cluaters', fontsize=20)
+    plt.title('Attacks and Sizes of the Cluaters', fontsize=20)
     ax1.set_xlabel('ClusterID')
     ax1.set_ylabel('Size of the Cluster',color = 'blue')
     ax1.scatter(cluster_size_data[(cluster_size_data['Dist']==300) & (cluster_size_data['Year']==year)]['ClusterID'], 
@@ -170,7 +171,7 @@ for year in years:
     plt.savefig(f'resources/visualisations/cluster_prospensity{year}.png')
 
     fig, ax1 = plt.subplots(figsize=(18,18))
-    #plt.title('Attacks and Sizes of the Sites', fontsize=20)
+    plt.title('Attacks and Sizes of the Sites', fontsize=20)
     ax1.set_ylabel('Size of the Cluster',color = 'blue')
     x=cluster_data_by_site[(cluster_data_by_site['Year']==year)]['Site']
     ax1.scatter(x, 
