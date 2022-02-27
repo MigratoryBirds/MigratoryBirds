@@ -48,7 +48,7 @@ for site in sites19:
   if site not in sites21 and site not in sites20:
     s19.append(site)
 
-print('Mobbing data is not collected in other years than the corresponing one')
+print('Mobbing data is not collected in other years than the corresponding one')
 print(f"2019: {s19}")
 print(f"2020: {s20}")
 print(f"2021: {s21}")
