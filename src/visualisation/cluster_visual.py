@@ -52,11 +52,12 @@ for dist in [15,50,200]:
             if len(nests) > 0:
                 df_nests = df_location_data.loc[nests.index]
                 df_nests['NestID'] = df_nests.index.values
+                df_nests['Propensity'] = [df_general_data.loc[nestID]['Propensity'] if nestID in df_general_data.index else np.nan for nestID in nests.index.values]
                 df_nests.apply(
                     lambda row:
                         folium.Marker(
                             location=[row['lat'],row['long']],
-                            popup= [i,row['NestID'],row['Site']],
+                            popup= [i,row['NestID'],row['Site'],row['Propensity']],
                             tooltip='<h5>Click for more info</5>',
                         ).add_to(cluster),
                         axis=1)
