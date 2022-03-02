@@ -13,9 +13,9 @@ np.random.seed(42)
 
 features_to_one_hot_encode = [
     'Model',
-    # 'Shape',
-    # 'Nearby',
-    # 'Water_area',
+    'Shape',
+    'Nearby',
+    'Water_area',
 ]
 
 

@@ -31,5 +31,13 @@ data_2 = pd.merge(
     left_on='NestID',
     right_on='NestID'
 )
-data = pd.concat([data_1, data_2])
-data.to_csv("resources/generated_data/joined_dataset.csv", index=False)
+data = pd.concat([data_1, data_2]).set_index('NestID')
+
+map_features = (
+    pd.read_csv('resources/generated_data/map_features.csv')
+    .drop(columns=['Site', 'X'])  # X is the last empty column
+).set_index('NestID')
+
+data = data.join(map_features)
+
+data.to_csv("resources/generated_data/joined_dataset.csv")
