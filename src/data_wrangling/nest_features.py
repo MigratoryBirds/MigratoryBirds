@@ -12,7 +12,7 @@ import numpy as np
 
 
 nests = pd.read_csv(
-    'resources/generated_data/joined_dataset.csv', index_col='NestID'
+    'resources/generated_data/joined_dataset_filled.csv', index_col='NestID'
 )
 clusters = pd.read_csv(
     'resources/generated_data/clusters.csv', index_col='NestID'
