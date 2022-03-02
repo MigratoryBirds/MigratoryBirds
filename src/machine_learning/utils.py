@@ -100,6 +100,6 @@ def perplexity(y_pred, y_test, positive_label):
 
 
 def one_hot_encode_and_bind(df: pd.DataFrame, col_name: str) -> pd.DataFrame:
-    one_hot = pd.get_dummies(df[col_name], prefix=col_name)
+    one_hot = pd.get_dummies(df[col_name], prefix=col_name, drop_first=True)
     res = pd.concat([df, one_hot], axis=1).drop(col_name, axis=1)
     return res
