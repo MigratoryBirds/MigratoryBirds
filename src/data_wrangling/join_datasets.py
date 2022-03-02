@@ -1,6 +1,5 @@
 import pandas as pd
 
-
 dataframe_mobbing_1 = pd.read_csv(
     "resources/original_data/FinlandMobbingDatafile.csv"
 ).drop(
@@ -14,9 +13,11 @@ dataframe_mobbing_2 = pd.read_csv(
 dataframe_location_1 = pd.read_csv(
     "resources/original_data/FinlandNestDatafile.csv"
 )
+dataframe_location_1['Site'] = dataframe_location_1['Site'].str.strip()
 dataframe_location_2 = pd.read_csv(
     "resources/original_data/Finland_nestdata2021_mod.csv"
 )
+dataframe_location_2['Site'] = dataframe_location_2['Site'].str.strip()
 dataframe_location_2['Year'] = 2021
 data_1 = pd.merge(
     dataframe_mobbing_1,
