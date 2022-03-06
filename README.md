@@ -10,13 +10,13 @@ Project for DSP2022 - Data Science Project I - Detecting micro and macro spatial
 ## Instructions for running
 
 1. Put data csv files in resources/data/original
-1. Run src/data\_wrangling/join\_datasets.py
-1. Run src/data\_wrangling/clustering.py
-1. Run src/data\_wrangling/nearby\_nests.py
-1. Run src/data\_wrangling/missing\_data.py
-1. Run src/data\_wrangling/nest\_features.py
-1. Run src/data\_wrangling/generate\_test\_train\_split.py
-1. Run src/data\_wrangling/build\_multiclass\_models\_sklearn.py
+1. Run `python3 src/data_wrangling/join_datasets.py`
+1. Run `python3 src/data_wrangling/clustering.py`
+1. Run `python3 src/data_wrangling/nearby_nests.py`
+1. Run `python3 src/data_wrangling/missing_data.py`
+1. Run `python3 src/data_wrangling/nest_features.py`
+1. Run `python3 src/data_wrangling/generate_test_train_split.py`
+1. Run `python3 src/data_wrangling/build_multiclass_models_sklearn.py`
 
 Please note that all scripts must be run from the root repository. For example, if we want to run the clustering phase, we would run `python src/data_wrangling/clustering.py`
 
