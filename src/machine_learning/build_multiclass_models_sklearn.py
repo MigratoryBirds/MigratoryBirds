@@ -56,8 +56,7 @@ class BuildMulticlassModelsSklearn(BuildModelsSklearnTemplate):
             self.x_train, self.x_test, self.columns_to_scale
         )
         BuildModelsSklearnTemplate._do_preprocessing(self)
-        self.x_train, self.x_test \
-            = self.x_train.values, self.x_test.values
+        self.x_train, self.x_test = self.x_train, self.x_test
         if self.pca:
             pca = PCA(n_components=19, random_state=1)
             self.x_train = pca.fit_transform(self.x_train)
@@ -215,6 +214,9 @@ process = BuildMulticlassModelsSklearn(
         'Date_nest_found',
         'New_rebuild',
         'Rebuild_original',
+        'Shape',
+        'Nearby',
+        'Water_area',
         'ClusterID_15',
         'ClusterID_30',
         'ClusterID_50',

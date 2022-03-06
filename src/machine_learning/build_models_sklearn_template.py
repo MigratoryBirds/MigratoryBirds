@@ -7,6 +7,7 @@ model that we train, using sklearn
 This class uses the Template Design Pattern
 """
 
+import joblib
 import warnings
 from typing import Any
 import sys
@@ -81,6 +82,9 @@ class BuildModelsSklearnTemplate:
                 name,
                 train_predictions_proba,
                 test_predictions_proba,
+            )
+            joblib.dump(
+                classifier, f'resources/machine_learning_results/models/{name}'
             )
         self.file_pointer.close()
 
