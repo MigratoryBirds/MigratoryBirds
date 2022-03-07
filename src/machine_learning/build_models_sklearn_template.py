@@ -12,7 +12,6 @@ import warnings
 from typing import Any
 import sys
 sys.path.append('src')
-from models import classification_models as models
 import sklearn
 from sklearn.model_selection import RandomizedSearchCV
 import pandas as pd
@@ -28,6 +27,7 @@ np.random.seed(42)
 class BuildModelsSklearnTemplate:
     def __init__(
         self,
+        models: dict,
         input_train_csv_file_name: str,
         input_test_csv_file_name: str,
         target_column: str,
@@ -43,13 +43,14 @@ class BuildModelsSklearnTemplate:
         self.train_folds = train_folds
         self.tuning_iterations = tuning_iterations
         self.positive_label = positive_label
+        self.models = models
 
     def compute(self) -> None:
         self._do_at_init()
         self._initialize_train_test_split()
         self._do_preprocessing()
         self._initialize_folds()
-        for name, model in models.items():
+        for name, model in self.models.items():
             print_stdout_and_file(f'Now training {name}', self.file_pointer)
             print('\tTuning...')
             best_params = self._tune_model(
@@ -62,27 +63,7 @@ class BuildModelsSklearnTemplate:
             )
             print('\t\tFitting...')
             classifier = self._train_model(model, best_params)
-            train_predictions = classifier.predict(self.x_train)
-            test_predictions = classifier.predict(self.x_test)
-            positive_label_index \
-                = list(classifier.classes_).index(self.positive_label)
-            train_predictions_proba = (
-                1
-                - classifier.predict_proba(self.x_train)
-                    [:, positive_label_index]
-            )
-            test_predictions_proba = (
-                1
-                - classifier.predict_proba(self.x_test)
-                    [:, positive_label_index]
-            )
-            self._do_print_evaluations(
-                train_predictions,
-                test_predictions,
-                name,
-                train_predictions_proba,
-                test_predictions_proba,
-            )
+            self._do_print_evaluations(name, classifier)
             joblib.dump(
                 classifier, f'resources/machine_learning_results/models/{name}'
             )
@@ -131,10 +112,7 @@ class BuildModelsSklearnTemplate:
 
     def _do_print_evaluations(
         self,
-        train_predictions: list,
-        test_predictions: list,
         model_name: str,
-        train_predictions_proba: list,
-        test_predictions_proba: list,
+        classifier: sklearn.base.BaseEstimator,
     ) -> None:
         pass

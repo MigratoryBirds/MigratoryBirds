@@ -15,13 +15,16 @@ from build_models_sklearn_template import \
 from sklearn.metrics import \
     accuracy_score, f1_score, precision_score, recall_score, roc_auc_score
 import numpy as np
+import sklearn
 from sklearn.decomposition import PCA
+from models import classification_models as models_dict
 np.random.seed(42)
 
 
 class BuildMulticlassModelsSklearn(BuildModelsSklearnTemplate):
     def __init__(
         self,
+        models: dict,
         input_train_csv_file_name: str,
         input_test_csv_file_name: str,
         target_column: str,
@@ -35,6 +38,7 @@ class BuildMulticlassModelsSklearn(BuildModelsSklearnTemplate):
     ):
         BuildModelsSklearnTemplate.__init__(
             self,
+            models,
             input_train_csv_file_name,
             input_test_csv_file_name,
             target_column,
@@ -64,12 +68,23 @@ class BuildMulticlassModelsSklearn(BuildModelsSklearnTemplate):
 
     def _do_print_evaluations(
         self,
-        train_predictions: list,
-        test_predictions: list,
         model_name: str,
-        train_predictions_proba: list,
-        test_predictions_proba: list,
+        classifier: sklearn.base.BaseEstimator,
     ) -> None:
+        train_predictions = classifier.predict(self.x_train)
+        test_predictions = classifier.predict(self.x_test)
+        positive_label_index \
+            = list(classifier.classes_).index(self.positive_label)
+        train_predictions_proba = (
+            1
+            - classifier.predict_proba(self.x_train)
+                [:, positive_label_index]
+        )
+        test_predictions_proba = (
+            1
+            - classifier.predict_proba(self.x_test)
+                [:, positive_label_index]
+        )
         print_stdout_and_file(
             '\t\t\taccuracy on train: '
             f'{accuracy_score(self.y_train.values, train_predictions)}',
@@ -190,6 +205,7 @@ class BuildMulticlassModelsSklearn(BuildModelsSklearnTemplate):
 
 
 process = BuildMulticlassModelsSklearn(
+    models_dict,
     input_train_csv_file_name
         ='resources/generated_data/nest_features_train.csv',
     input_test_csv_file_name

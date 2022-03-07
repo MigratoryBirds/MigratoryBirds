@@ -4,11 +4,12 @@ sklearn models
 """
 
 # classification models
-from sklearn.linear_model import LogisticRegression
-from sklearn.svm import SVC
-from sklearn.neural_network import MLPClassifier
+from sklearn.linear_model import \
+    LogisticRegression, LinearRegression, Ridge, Lasso, BayesianRidge
+from sklearn.svm import SVC, SVR
+from sklearn.neural_network import MLPClassifier, MLPRegressor
 from sklearn.naive_bayes import GaussianNB
-from sklearn.tree import DecisionTreeClassifier
+from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor
 from sklearn.ensemble import RandomForestClassifier
 
 
@@ -114,4 +115,84 @@ classification_models = {
             "class_weight": "balanced"
         }
     }
+}
+
+regression_models = {
+    "LinearRegression": {
+        "class": LinearRegression,
+        "hyperparameters": {},
+        "set_parameters": {
+            "n_jobs": -1,
+        }
+    },
+    "BayesianRidge": {
+        "class": BayesianRidge,
+        "hyperparameters": {},
+        "set_parameters": {}
+    },
+    "Ridge": {
+        "class": Ridge,
+        "hyperparameters": {
+            "alpha": pow_10_paramter,
+            "tol": pow_10_paramter,
+            "solver": [
+                "auto",
+                "svd",
+                "cholesky",
+                "lsqr",
+                "sparse_cg",
+                "sag",
+                "saga",
+            ]
+        },
+        "set_parameters": {}
+    },
+    "Lasso": {
+        "class": Lasso,
+        "hyperparameters": {
+            "alpha": pow_10_paramter,
+        },
+        "set_parameters": {
+            "tol": 0.0001,
+            "max_iter": 10000
+        }
+    },
+    "SVR": {
+        "class": SVR,
+        "hyperparameters": {
+            "degree": list(range(1, 6, 1)),
+            "tol": pow_10_paramter,
+            "C": pow_10_paramter,
+            "epsilon": pow_10_paramter,
+            "kernel": ["linear", "poly", "rbf", "sigmoid"],
+        },
+        "set_parameters": {}
+    },
+    "DecisionTreeRegressor": {
+        "class": DecisionTreeRegressor,
+        "hyperparameters": {
+            "criterion": [
+                "squared_error",
+                "friedman_mse",
+                "absolute_error",
+            ],
+            "max_depth": list(range(5, 300, 5)),
+        },
+        "set_parameters": {}
+    },
+    # "MLPRegressor": {
+    #     "class": MLPRegressor,
+    #     "hyperparameters": {
+    #         "hidden_layer_sizes": [
+    #             (200, 200), (100, 100), (100, 100, 100), (200, 100, 100)
+    #         ],
+    #         "activation": ["identity", "logistic", "tanh", "relu"],
+    #         "solver": ["lbfgs", "sgd", "adam"],
+    #         "alpha": pow_10_paramter,
+    #     },
+    #     "set_parameters": {
+    #         "early_stopping": True,
+    #         "max_iter": 500,
+    #     }
+    # }
 }
