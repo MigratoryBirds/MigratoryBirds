@@ -1,5 +1,7 @@
 import numpy as np
+import numpy.random as npr
 import pandas as pd
+import matplotlib.pyplot as plt
 
 clusters = pd.read_csv("resources\\generated_data\\clusters.csv")
 
@@ -57,10 +59,180 @@ def percentages_in_clusters(clusterID,clusters,data,data_nest):
         
     return dataframe
 
+data = data.append(data_2021, ignore_index=True)
+data_nest = data_nest.append(data_nest_2021, ignore_index=True)
+
+
 clusterIDs = ["ClusterID_15","ClusterID_30","ClusterID_50","ClusterID_100","ClusterID_200","ClusterID_300"]
+
+dfs = [0]*len(clusterIDs)
+i = 0
 
 for c in clusterIDs:
     
     df = percentages_in_clusters(c,clusters,data,data_nest)
     df.to_csv("resources\\generated_data\\" + c + "_persentages.csv")
+    dfs[i] = df
+    i += 1
+
+
+def draw_plots3(dfs,name):
+
+    fig, ax = plt.subplots(6,figsize=(15,15))
+
+    for j in range(len(dfs)):
+        df = dfs[j]
+        n = len(df)
+        x = np.zeros((n,3))
+
+        for i in range(n):
+            x[i,0] = df.at[i,"percentage_shy"]
+            x[i,1] = df.at[i,"percentage_aggressive"]
+            x[i,2] = df.at[i,"percentage_no_data"]
+        
+        colors = ['cornflowerblue', 'tomato', 'grey']
+        ax[j].hist(x,histtype='bar', color=colors, label=["shy","aggressive","no data"])
+        ax[j].legend(prop={'size': 10})
+        ax[j].set_title('bars with legend')
+    
+        ax[j].set_title(clusterIDs[j])
+    
+        ax[j].set_xlabel('percentage')
+        ax[j].set_ylabel('frequency')
+
+    print()
+    fig.tight_layout(pad=2.0)
+    fig.patch.set_alpha(1)
+    fig.savefig("resources\\visualisations\\plots\\" + name + ".png", transparent=False)
+
+
+def draw_plots2(dfs,multiplier_shy,multiplier_agg,name):
+
+    fig, ax = plt.subplots(6,figsize=(15,15))
+
+    for j in range(len(dfs)):
+        df = dfs[j]
+        n = len(df)
+        x = np.zeros((n,2))
+
+        for i in range(n):
+            x[i,0] = df[df[clusterIDs[j]] == i].at[i,"percentage_shy"] + df[df[clusterIDs[j]] == i].at[i,"percentage_no_data"] * multiplier_shy
+            x[i,1] = df[df[clusterIDs[j]] == i].at[i,"percentage_aggressive"] + df[df[clusterIDs[j]] == i].at[i,"percentage_no_data"] * multiplier_agg
+    
+        colors = ['cornflowerblue', 'tomato']
+        ax[j].hist(x,histtype='bar', color=colors, label=["shy","aggressive"])
+        ax[j].legend(prop={'size': 10})
+        ax[j].set_title('bars with legend')
+    
+        ax[j].set_title(clusterIDs[j])
+    
+        ax[j].set_xlabel('percentage')
+        ax[j].set_ylabel('frequency')
+
+    print()
+    fig.tight_layout(pad=2.0)
+    fig.patch.set_alpha(1)
+    fig.savefig("resources\\visualisations\\plots\\" + name + ".png", transparent=False)
+
+
+shy = shy_2019 + shy_2020 + shy_2021
+agg = agg_2019 + agg_2020 + agg_2021
+nd = nd_2019 + nd_2020 + nd_2021
+ka = agg / (agg + shy)
+ks = shy / (agg + shy)
+
+draw_plots3(dfs,"percentage_with_no_data")
+draw_plots2(dfs,ks,ka,"percentage_with_weighted_split")
+draw_plots2(dfs,0.5,0.5,"percentage_with_50_50_split")
+
+    
+def draw_plots2_control(dfs,name,ka,ks):
+
+    fig, ax = plt.subplots(6,figsize=(15,15))
+
+    for j in range(len(dfs)):
+        df = dfs[j]
+        n = len(df)
+        x = np.zeros((n,2))
+
+        for i in range(n):
+            
+            n = df.at[i,"shy"] + df.at[i,"aggressive"] + df.at[i,"no_data"]
+            n_agg = npr.binomial(n, ka)
+            n_shy = npr.binomial(n, ks)
+            n_nd = max(0,n-n_agg -n_shy )
+            n_new = n_agg + n_shy + n_nd
+            
+            if(n_new == 0): n_new = 1
+                
+            x[i,0] = n_shy / n_new  + n_nd/n_new *ks
+            x[i,1] = n_agg / n_new  + n_nd/n_new *ka
+            #print(x[i,0],x[i,1])
+        
+        colors = ['cornflowerblue', 'tomato']
+        ax[j].hist(x,histtype='bar', color=colors, label=["shy","aggressive"])
+        ax[j].legend(prop={'size': 10})
+        ax[j].set_title('bars with legend')
+    
+        ax[j].set_title(clusterIDs[j])
+    
+        ax[j].set_xlabel('percentage')
+        ax[j].set_ylabel('frequency')
+
+    print()
+    fig.tight_layout(pad=2.0)
+    fig.patch.set_alpha(1)
+    fig.savefig("resources\\visualisations\\plots\\" + name + ".png", transparent=False)
+
+
+
+def draw_plots3_control(dfs,name,ka,ks,nd):
+
+    fig, ax = plt.subplots(6,figsize=(15,15))
+
+    for j in range(len(dfs)):
+        df = dfs[j]
+        n = len(df)
+        x = np.zeros((n,3))
+
+        for i in range(n):
+            n = df.at[i,"shy"] + df.at[i,"aggressive"] + df.at[i,"no_data"]
+            n_agg = npr.binomial(n, ka)
+            n_shy = npr.binomial(n, ks)
+            n_nd = npr.binomial(n, nd)
+            n_new = n_agg + n_shy + n_nd
+            if(n_new == 0): n_new = 1
+            x[i,0] = n_shy / n_new 
+            x[i,1] = n_agg / n_new 
+            x[i,2] = n_nd / n_new 
+            #print(x[i,0],x[i,1],x[i,2])
+        
+        colors = ['cornflowerblue', 'tomato', 'grey']
+        ax[j].hist(x,histtype='bar', color=colors, label=["shy","aggressive","no data"])
+        ax[j].legend(prop={'size': 10})
+        ax[j].set_title('bars with legend')
+    
+        ax[j].set_title(clusterIDs[j])
+    
+        ax[j].set_xlabel('percentage')
+        ax[j].set_ylabel('frequency')
+
+    print()
+    fig.tight_layout(pad=2.0)
+    fig.patch.set_alpha(1)
+    fig.savefig("resources\\visualisations\\plots\\" + name + ".png", transparent=False)
+
+
+draw_plots2_control(dfs,"percentage_with_weighted_split_control",ka,ks)
+draw_plots2_control(dfs,"percentage_with_50_50_split_control",0.5,0.5)
+
+    
+shy = shy_2019 + shy_2020 + shy_2021
+agg = agg_2019 + agg_2020 + agg_2021
+nd = nd_2019 + nd_2020 + nd_2021
+ka = agg / (agg + shy + nd)
+ks = shy / (agg + shy + nd)
+nd = nd / (agg + shy + nd)
+
+draw_plots3_control(dfs,"percentage_with_no_data_control",ka,ks,nd)
 
