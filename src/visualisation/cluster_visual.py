@@ -2,10 +2,8 @@
   This python script is mainly used to create different kind of visualisations of the data.
   Both maps and plots are created.
 """
-from re import T
 import pandas as pd
 import numpy as np
-import plotly.express as px
 import matplotlib.pyplot as plt
 import seaborn as sns
 
@@ -29,37 +27,13 @@ def generate_cluster_info(cluster: int, year: int, general_data: pd.DataFrame,
     all_nests = len([nestID for nestID in nests.index.values])
     nests_with_data = len([nestID for nestID in nests.index.values if nestID in general_data.index])
     sites = list(set([df_location_data.loc[nestID]['Site'].strip() for nestID in nests.index.values]))
-    total_propensity = sum([general_data.loc[nestID]['Propensity'] for nestID in nests.index.values if nestID in general_data.index])
+    total_propensity = sum([general_data.loc[nestID]['Propensity']  if nestID in general_data.index else 0.2 for nestID in nests.index.values])
     row = pd.DataFrame({'ClusterID': [f'ClusterID {cluster}'], 'Year': [year], 'Dist': [dist], 'Site': [sites], 'Nests_with_data': [nests_with_data],
         'All_nests': [all_nests], 'Total_propensity': [total_propensity]})
     return cluster_size_data.append(row, ignore_index=True)
 
-def save_html_file(file_name: str, figure):
-    figure.write_html(f'resources/visualisations/plots/{file_name}', auto_open=False)
-
 YEARS = df_clusters['Year'].unique()
-
-# Info plots with multiple column values and plot with SnapsRasps data by Date_nest_found column
-df_info = df_general_data.drop(columns=['Year', 'Model', 'Laydate_first_egg',
-                      'Site', 'Days_from_LD','Rebuild_original', 'lat', 'long'])
-df_info_and_clusters = (pd.merge(df_info, df_clusters, left_on='NestID', right_on='NestID')
-    .sort_values(by=['Year','Date_nest_found']))
-
-df_15 = df_info_and_clusters.drop(columns=['ClusterID_30','ClusterID_50','ClusterID_100','ClusterID_200'])
-df_30 = df_info_and_clusters.drop(columns=['ClusterID_15','ClusterID_50','ClusterID_100','ClusterID_200'])
-df_50 = df_info_and_clusters.drop(columns=['ClusterID_30','ClusterID_15','ClusterID_100','ClusterID_200'])
-df_100 = df_info_and_clusters.drop(columns=['ClusterID_30','ClusterID_50','ClusterID_15','ClusterID_200'])
-df_200 = df_info_and_clusters.drop(columns=['ClusterID_30','ClusterID_50','ClusterID_100','ClusterID_15'])
-cluster_dfs = [df_15,df_30,df_50,df_100,df_200]
-index = 0
 cluster_dist= [15,30,50,100, 200]
-for df in cluster_dfs:
-    df.index = np.arange(len(df['Rasps']))
-    df = df.drop(columns=['Date_trial','Date_nest_found', 'New_rebuild', 'Bill_snaps', 'Rasps'])
-    fig = px.parallel_coordinates(data_frame=df,  color=df[f'ClusterID_{cluster_dist[index]}'], color_continuous_scale=px.colors.diverging.Earth)
-    save_html_file(f'cluster_data_plot_{cluster_dist[index]}.html', fig)
-    index += 1
-# End of plotting multiple column values
 
 # Create site size vs propensity data
 cluster_data_by_site = pd.DataFrame(columns=['Year', 'Site', 'Total_angrybirds', 'All_nests'])
@@ -75,7 +49,6 @@ for year in YEARS:
         row = pd.DataFrame({'Site': [site], 'Year': [year], 'Total_propensity': [total_propensity], 'All_nests': [size_all], 'Nests_with_data': [size_nest_data]})
         cluster_data_by_site = cluster_data_by_site.append(row, ignore_index=True)
 
-# cluster_data_by_site.to_csv("resources/generated_data/cluster_data.csv", index=False)
 # Create cluster size vs propensity data
 cluster_size_data  = pd.DataFrame(columns=['ClusterID', 'Year', 'Dist', 'Site',
     'Nests_with_data','All_nests','Total_angrybirds'])
@@ -87,6 +60,7 @@ for dist in cluster_dist:
             nests = nests_current_year[nests_current_year[f'ClusterID_{dist}'] == i]
             if len(nests) > 0:
                 cluster_size_data = generate_cluster_info(i, year, df_general_data, nests, cluster_size_data, dist)
+
 for year in YEARS:
     df = cluster_size_data[(cluster_size_data.Dist==100) & (cluster_size_data.Year==year)]
     
@@ -131,23 +105,16 @@ for year in YEARS:
     for bars in ax.containers:
         ax.bar_label(bars,)
     sns.despine(left=True, bottom=True)
+    plt.show()
     ax.get_figure().savefig(f'resources/visualisations/plots/cluster_site_propensity{year}.png')
 
 for dist in cluster_dist:
     sns.set_theme(style="whitegrid")
     plt.figure(figsize=(10,15))
     plt.subplot(2,1,1)
-    plt.title(f'Propensity Compared to Cluster Size (distance among nests max. {dist} m)', fontsize=20)
+    plt.title(f'Propensity Compared to Cluster Size (distance {dist} m)', fontsize=20)
     sns.stripplot(x=cluster_size_data[(cluster_size_data.Dist==dist) ]['All_nests'],
         y=cluster_size_data[(cluster_size_data.Dist==dist)]['Total_propensity'],
         jitter=0.3)
-    plt.xlabel('Size of the clusters (Nests without data included)', fontsize=15)
-    plt.ylabel('Number of propensities',fontsize=15)
-    plt.subplot(2,1,2)
-    sns.stripplot(x=cluster_size_data[(cluster_size_data.Dist==dist)]['Nests_with_data'],
-        y=cluster_size_data[(cluster_size_data.Dist==dist)]['Total_propensity'],
-        jitter=0.3)
-    plt.xlabel('Size of the clusters (Nests without data not included)',fontsize=15)
-    plt.ylabel('Number of propensities',fontsize=15)
-    sns.despine(left=True, bottom=True)
+    plt.ylabel('Amount of Attacks (nests without data are treated with 0.2 propability))',fontsize=15)
     plt.show()
