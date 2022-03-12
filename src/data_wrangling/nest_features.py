@@ -10,7 +10,7 @@ from utils.math_utils import euclidean
 import pandas as pd
 import numpy as np
 
-propensity_feature = 'Propensity_19.5'
+propensity_feature = 'Propensity'
 
 
 nests = pd.read_csv(
@@ -59,7 +59,7 @@ for dist in CLUSTER_DISTANCES:
                 nest_id_to_shy_birds_percentage[nest_id] = 0.5
             else:
                 nest_id_to_shy_birds_percentage[nest_id] = (
-                    shy / (shy + aggressive)
+                    shy / (shy + aggressive)  # Provided better results
                     # (shy + nulls / 2) / (shy + aggressive + nulls)
                 )
     df[f'ShyBirdsPercentage_Clusters_{dist}'] = [
@@ -89,7 +89,7 @@ for dist in CLUSTER_DISTANCES:
                 nest_id_to_shy_birds_percentage[nest_id] = 0.5
             else:
                 nest_id_to_shy_birds_percentage[nest_id] = (
-                    shy / (shy + aggressive)
+                    shy / (shy + aggressive)  # Provided better results
                     # (shy + nulls / 2) / (shy + aggressive + nulls)
                 )
     df[f'ShyBirdsPercentage_Nearby_{dist}'] = [
