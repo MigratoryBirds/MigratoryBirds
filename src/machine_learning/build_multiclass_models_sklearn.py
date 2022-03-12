@@ -14,11 +14,9 @@ from build_models_sklearn_template import \
     BuildModelsSklearnTemplate
 from sklearn.metrics import \
     accuracy_score, f1_score, precision_score, recall_score, roc_auc_score
-import numpy as np
 import sklearn
 from sklearn.decomposition import PCA
 from models import classification_models as models_dict
-np.random.seed(42)
 
 
 class BuildMulticlassModelsSklearn(BuildModelsSklearnTemplate):
@@ -56,9 +54,10 @@ class BuildMulticlassModelsSklearn(BuildModelsSklearnTemplate):
         self.df_test.drop(columns=self.columns_to_drop, inplace=True)
 
     def _do_preprocessing(self) -> None:
-        self.x_train, self.x_test = scale_features(
-            self.x_train, self.x_test, self.columns_to_scale
-        )
+        if len(self.columns_to_scale) > 0:
+            self.x_train, self.x_test = scale_features(
+                self.x_train, self.x_test, self.columns_to_scale
+            )
         BuildModelsSklearnTemplate._do_preprocessing(self)
         self.x_train, self.x_test = self.x_train, self.x_test
         if self.pca:
@@ -210,12 +209,13 @@ process = BuildMulticlassModelsSklearn(
         ='resources/generated_data/nest_features_train.csv',
     input_test_csv_file_name
         ='resources/generated_data/nest_features_test.csv',
-    target_column='Propensity_19.5',
+    target_column='Propensity',
     output_file_name=(
         'resources/machine_learning_results/'
         'multiclass_classification_models.txt'
     ),
     columns_to_drop=[
+        'ShyBirdsPercentage_Nearby_200',
         'NestID',
         'Year',
         'Laydate_first_egg',
@@ -239,41 +239,41 @@ process = BuildMulticlassModelsSklearn(
         'ClusterID_100',
         'ClusterID_200',
         'ClusterID_300',
-        'Propensity',
+        # 'Propensity',
         'Propensity_0',
         'Propensity_17.5',
-        # 'Propensity_19.5',
+        'Propensity_19.5',
     ],
     columns_to_scale=[
-        'Cuckoo_perch',
-        'x',
-        'y',
-        'z',
-        'nests_nearby_15',
-        'nests_nearby_30',
-        'nests_nearby_50',
-        'nests_nearby_100',
-        'nests_nearby_200',
-        'nests_nearby_300',
-        'closest_nest_distance',
-        'ClusterSize_15',
-        'ClusterSize_30',
-        'ClusterSize_50',
-        'ClusterSize_100',
-        'ClusterSize_200',
-        'ClusterSize_300',
-        'ShyBirdsPercentage_Clusters_15',
-        'ShyBirdsPercentage_Clusters_30',
-        'ShyBirdsPercentage_Clusters_50',
-        'ShyBirdsPercentage_Clusters_100',
-        'ShyBirdsPercentage_Clusters_200',
-        'ShyBirdsPercentage_Clusters_300',
-        'ShyBirdsPercentage_Nearby_15',
-        'ShyBirdsPercentage_Nearby_30',
-        'ShyBirdsPercentage_Nearby_50',
-        'ShyBirdsPercentage_Nearby_100',
-        'ShyBirdsPercentage_Nearby_200',
-        'ShyBirdsPercentage_Nearby_300',
+        # 'Cuckoo_perch',
+        # 'x',
+        # 'y',
+        # 'z',
+        # 'nests_nearby_15',
+        # 'nests_nearby_30',
+        # 'nests_nearby_50',
+        # 'nests_nearby_100',
+        # 'nests_nearby_200',
+        # 'nests_nearby_300',
+        # 'closest_nest_distance',
+        # 'ClusterSize_15',
+        # 'ClusterSize_30',
+        # 'ClusterSize_50',
+        # 'ClusterSize_100',
+        # 'ClusterSize_200',
+        # 'ClusterSize_300',
+        # 'ShyBirdsPercentage_Clusters_15',
+        # 'ShyBirdsPercentage_Clusters_30',
+        # 'ShyBirdsPercentage_Clusters_50',
+        # 'ShyBirdsPercentage_Clusters_100',
+        # 'ShyBirdsPercentage_Clusters_200',
+        # 'ShyBirdsPercentage_Clusters_300',
+        # 'ShyBirdsPercentage_Nearby_15',
+        # 'ShyBirdsPercentage_Nearby_30',
+        # 'ShyBirdsPercentage_Nearby_50',
+        # 'ShyBirdsPercentage_Nearby_100',
+        # 'ShyBirdsPercentage_Nearby_200',
+        # 'ShyBirdsPercentage_Nearby_300',
     ],
     train_folds=5,
     tuning_iterations=20,
