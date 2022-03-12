@@ -10,6 +10,8 @@ from utils.math_utils import euclidean
 import pandas as pd
 import numpy as np
 
+propensity_feature = 'Propensity_19.5'
+
 
 nests = pd.read_csv(
     'resources/generated_data/joined_dataset_filled.csv', index_col='NestID'
@@ -25,6 +27,10 @@ map_features = pd.read_csv(
 )
 
 df = clusters.join(nearby_nests).join(nests.drop('Year', axis=1), how="outer")
+df['Propensity_19.5'] = df['SnapsRasps'] > 19.5
+df['Propensity_17.5'] = df['SnapsRasps'] > 17.5
+df['Propensity_0'] = df['SnapsRasps'] > 0
+
 
 for dist in CLUSTER_DISTANCES:
     df[f'ClusterSize_{dist}'] = [
@@ -46,8 +52,8 @@ for dist in CLUSTER_DISTANCES:
             nest_id_to_shy_birds_percentage[nest_id] = 0.5
         else:
             total = len(nests_same_cluster)
-            shy = sum(nests_same_cluster['Propensity'] == 0)
-            aggressive = sum(nests_same_cluster['Propensity'] == 1)
+            shy = sum(nests_same_cluster[propensity_feature] == 0)
+            aggressive = sum(nests_same_cluster[propensity_feature] == 1)
             nulls = total - shy - aggressive
             if nulls == total:
                 nest_id_to_shy_birds_percentage[nest_id] = 0.5
@@ -76,8 +82,8 @@ for dist in CLUSTER_DISTANCES:
             nest_id_to_shy_birds_percentage[nest_id] = 0.5
         else:
             total = len(nearby_nests)
-            shy = sum(nearby_nests['Propensity'] == 0)
-            aggressive = sum(nearby_nests['Propensity'] == 1)
+            shy = sum(nearby_nests[propensity_feature] == 0)
+            aggressive = sum(nearby_nests[propensity_feature] == 1)
             nulls = total - shy - aggressive
             if nulls == total:
                 nest_id_to_shy_birds_percentage[nest_id] = 0.5
@@ -94,4 +100,5 @@ for dist in CLUSTER_DISTANCES:
 df = df.dropna(axis=0, subset=['Propensity'])
 
 # df = df.join(map_features)
+
 df.to_csv('resources/generated_data/nest_features.csv')

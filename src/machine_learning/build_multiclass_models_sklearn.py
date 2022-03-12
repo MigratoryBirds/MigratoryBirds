@@ -210,7 +210,7 @@ process = BuildMulticlassModelsSklearn(
         ='resources/generated_data/nest_features_train.csv',
     input_test_csv_file_name
         ='resources/generated_data/nest_features_test.csv',
-    target_column='Propensity',
+    target_column='Propensity_19.5',
     output_file_name=(
         'resources/machine_learning_results/'
         'multiclass_classification_models.txt'
@@ -239,6 +239,10 @@ process = BuildMulticlassModelsSklearn(
         'ClusterID_100',
         'ClusterID_200',
         'ClusterID_300',
+        'Propensity',
+        'Propensity_0',
+        'Propensity_17.5',
+        # 'Propensity_19.5',
     ],
     columns_to_scale=[
         'Cuckoo_perch',

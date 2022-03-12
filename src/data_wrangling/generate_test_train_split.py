@@ -35,7 +35,7 @@ def one_hot_encode(df: pd.DataFrame, columns: list[str]) -> None:
 df = pd.read_csv('resources/generated_data/nest_features.csv')
 df = one_hot_encode(df, features_to_one_hot_encode)
 train_df, test_df = \
-    get_stratified_train_test_folds(df, 'Propensity', test_factor=0.3)
+    get_stratified_train_test_folds(df, 'Propensity_19.5', test_factor=0.3)
 train_df.to_csv(
     'resources/generated_data/nest_features_train.csv', index=False
 )

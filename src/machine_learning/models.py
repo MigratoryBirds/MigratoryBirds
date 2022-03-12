@@ -11,6 +11,8 @@ from sklearn.neural_network import MLPClassifier, MLPRegressor
 from sklearn.naive_bayes import GaussianNB
 from sklearn.tree import DecisionTreeClassifier, DecisionTreeRegressor
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.cluster import \
+    KMeans, AgglomerativeClustering, Birch, MiniBatchKMeans, SpectralClustering
 
 
 pow_10_paramter = [0.0001, 0.001, 0.01, 0.1, 1, 10, 100]
@@ -195,4 +197,48 @@ regression_models = {
     #         "max_iter": 500,
     #     }
     # }
+}
+
+clustering_models = {
+    "KMeans": {
+        "class": KMeans,
+        "hyperparameters": {
+        },
+        "set_parameters": {
+            "n_clusters": 2
+        }
+    },
+    "AgglomerativeClustering": {
+        "class": AgglomerativeClustering,
+        "hyperparameters": {
+        },
+        "set_parameters": {
+            "n_clusters": 2
+        }
+    },
+    "Birch": {
+        "class": Birch,
+        "hyperparameters": {
+        },
+        "set_parameters": {
+            "n_clusters": 2
+        }
+    },
+    "MiniBatchKMeans": {
+        "class": MiniBatchKMeans,
+        "hyperparameters": {
+        },
+        "set_parameters": {
+            "n_clusters": 2
+        }
+    },
+    "SpectralClustering": {
+        "class": SpectralClustering,
+        "hyperparameters": {
+        },
+        "set_parameters": {
+            "n_clusters": 2,
+            "eigen_tol": 0.0001
+        }
+    }
 }

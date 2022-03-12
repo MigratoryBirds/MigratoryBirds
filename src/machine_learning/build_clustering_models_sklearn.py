@@ -1,6 +1,6 @@
 """
 This class inherits from the build_models_sklearn_template to build
-regression models on the dataset using both the original dataset as well
+unsupervised models on the dataset using both the original dataset as well
 as the features after going through PCA
 
 When evaluating, it is also evaluated based on binary classification
@@ -8,18 +8,24 @@ When evaluating, it is also evaluated based on binary classification
 
 
 from typing import Any
-from utils import scale_features, print_stdout_and_file
 from build_models_sklearn_template import \
     BuildModelsSklearnTemplate
 from sklearn.metrics import r2_score
 import numpy as np
+import pandas as pd
 import sklearn
 from sklearn.decomposition import PCA
-from models import regression_models as models_dict
+from models import clustering_models as models_dict
+from machine_learning.utils import (
+    scale_features,
+    extract_target_feature,
+    print_stdout_and_file,
+)
+from sklearn.tree import DecisionTreeClassifier
 np.random.seed(42)
 
 
-class BuildRegressionModelsSklearn(BuildModelsSklearnTemplate):
+class BuildClusteringModelsSklearn(BuildModelsSklearnTemplate):
     def __init__(
         self,
         models: dict,
@@ -50,17 +56,38 @@ class BuildRegressionModelsSklearn(BuildModelsSklearnTemplate):
         self.columns_to_scale = columns_to_scale
 
     def _do_at_init(self) -> None:
-        self.df_train.drop(columns=self.columns_to_drop, inplace=True)
-        self.df_test.drop(columns=self.columns_to_drop, inplace=True)
+        self.df = pd.concat([self.df_train, self.df_test])
+        self.df.drop(columns=self.columns_to_drop, inplace=True)
+
+    def _initialize_train_test_split(self) -> None:
+        self.x, self.y \
+            = extract_target_feature(self.df, self.target_column)
 
     def _do_preprocessing(self) -> None:
-        self.x_train, self.x_test = scale_features(
-            self.x_train, self.x_test, self.columns_to_scale
+        self.x, _ = scale_features(
+            self.x, None, self.columns_to_scale
         )
         if self.pca:
             pca = PCA(n_components=19, random_state=1)
-            self.x_train = pca.fit_transform(self.x_train)
-            self.x_test = pca.transform(self.x_test)
+            self.x = pca.fit_transform(self.x)
+
+    def compute(self) -> None:
+        self._do_at_init()
+        self._initialize_train_test_split()
+        self._do_preprocessing()
+        for name, model in self.models.items():
+            print_stdout_and_file(f'Now training {name}', self.file_pointer)
+            print('\tFitting...')
+            classifier = model['class'](**model['set_parameters'])
+            labels = classifier.fit_predict(self.x)
+            self.df['clustering_label'] = labels
+            tree = DecisionTreeClassifier(max_depth=1)
+            tree.fit(
+                self.df['SnapsRasps'].values.reshape(-1, 1),
+                self.df['clustering_label']
+            )
+            print(f'\tbest split: {tree.tree_.threshold[0]}')
+        self.file_pointer.close()
 
     def _do_print_evaluations(
         self,
@@ -81,13 +108,13 @@ class BuildRegressionModelsSklearn(BuildModelsSklearnTemplate):
         )
 
 
-process = BuildRegressionModelsSklearn(
+process = BuildClusteringModelsSklearn(
     models=models_dict,
     input_train_csv_file_name
         ='resources/generated_data/nest_features_train.csv',
     input_test_csv_file_name
         ='resources/generated_data/nest_features_test.csv',
-    target_column='Rasps',
+    target_column='SnapsRasps',
     output_file_name=(
         'resources/machine_learning_results/'
         'regression_models.txt'
@@ -98,10 +125,13 @@ process = BuildRegressionModelsSklearn(
         'Laydate_first_egg',
         'Date_trial',
         'Days_from_LD',
-        # 'Rasps',
+        'Rasps',
         'Bill_snaps',
-        'SnapsRasps',
+        # 'SnapsRasps',
         'Propensity',
+        'Propensity_0',
+        'Propensity_17.5',
+        'Propensity_19.5',
         'Site',
         'lat',
         'long',
