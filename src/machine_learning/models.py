@@ -105,7 +105,9 @@ classification_models = {
             "max_depth": [None, 30, 60, 100, 200, 300, 500, 1000],
             "max_leaf_nodes": [None, 30, 60, 100, 200, 300, 500, 1000]
         },
-        "set_parameters": {}
+        "set_parameters": {
+            "n_jobs": -1,
+        }
     },
     "BalancedRandomForest": {
         "class": RandomForestClassifier,
@@ -114,6 +116,7 @@ classification_models = {
             "max_leaf_nodes": [None, 30, 60, 100, 200, 300, 500, 1000]
         },
         "set_parameters": {
+            "n_jobs": -1,
             "class_weight": "balanced"
         }
     }
