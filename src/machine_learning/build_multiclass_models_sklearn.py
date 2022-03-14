@@ -84,122 +84,66 @@ class BuildMulticlassModelsSklearn(BuildModelsSklearnTemplate):
             - classifier.predict_proba(self.x_test)
                 [:, positive_label_index]
         )
-        print_stdout_and_file(
-            '\t\t\taccuracy on train: '
-            f'{accuracy_score(self.y_train.values, train_predictions)}',
-            self.file_pointer
-        )
-        print_stdout_and_file(
-            '\t\t\tmacro f1 on train: '
-            f'{f1_score(self.y_train.values, train_predictions, average="macro")}',
-            self.file_pointer
-        )
-        print_stdout_and_file(
-            '\t\t\tmicro f1 on train: '
-            f'{f1_score(self.y_train.values, train_predictions, average="micro")}',
-            self.file_pointer
-        )
-        print_stdout_and_file(
-            '\t\t\taccuracy on test: '
-            f'{accuracy_score(self.y_test.values, test_predictions)}',
-            self.file_pointer
-        )
-        print_stdout_and_file(
-            '\t\t\tmacro precision on test: '
-            f'{precision_score(self.y_test.values, test_predictions, average="macro", zero_division=0)}',
-            self.file_pointer
-        )
-        print_stdout_and_file(
-            '\t\t\tmicro precision on test: '
-            f'{precision_score(self.y_test.values, test_predictions, average="micro", zero_division=0)}',
-            self.file_pointer
-        )
-        print_stdout_and_file(
-            '\t\t\tmacro recall on test: '
-            f'{recall_score(self.y_test.values, test_predictions, average="macro", zero_division=0)}',
-            self.file_pointer
-        )
-        print_stdout_and_file(
-            '\t\t\tmicro recall on test: '
-            f'{recall_score(self.y_test.values, test_predictions, average="micro", zero_division=0)}',
-            self.file_pointer
-        )
-        print_stdout_and_file(
-            '\t\t\tmacro f1 on test: '
-            f'{f1_score(self.y_test.values, test_predictions, average="macro", zero_division=0)}',
-            self.file_pointer
-        )
-        print_stdout_and_file(
-            '\t\t\tmicro f1 on test: '
-            f'{f1_score(self.y_test.values, test_predictions, average="micro", zero_division=0)}',
-            self.file_pointer
-        )
-        plot_confusion_matrix(
-            self.y_test.values,
-            test_predictions,
-            self.df_train[self.target_column].unique(),
-            f"multiclass_{model_name}_average_confusion_matrix.png",
-        )
-        print_stdout_and_file("", self.file_pointer)
         binary_y_train_actual = self.y_train.values
         binary_y_train_predicted = train_predictions
         binary_y_test_actual = self.y_test.values
         binary_y_test_predicted = test_predictions
         print_stdout_and_file(
-            '\t\t\tbinary accuracy on train: '
+            '\t\t\taccuracy on train: '
             f'{accuracy_score(binary_y_train_actual, binary_y_train_predicted)}',
             self.file_pointer
         )
         print_stdout_and_file(
-            '\t\t\tbinary f1 on train: '
+            '\t\t\tf1 on train: '
             f'{f1_score(binary_y_train_actual, binary_y_train_predicted, pos_label=self.positive_label)}',
             self.file_pointer
         )
         print_stdout_and_file(
-            '\t\t\tbinary perplexity train: '
+            '\t\t\tperplexity train: '
             f'{perplexity(train_predictions_proba, binary_y_train_predicted, self.positive_label)}',
             self.file_pointer
         )
         print_stdout_and_file(
-            '\t\t\tbinary accuracy on test: '
+            '\t\t\taccuracy on test: '
             f'{accuracy_score(binary_y_test_actual, binary_y_test_predicted)}',
             self.file_pointer
         )
         print_stdout_and_file(
-            '\t\t\tbinary precision on test: '
+            '\t\t\tprecision on test: '
             f'{precision_score(binary_y_test_actual, binary_y_test_predicted, pos_label=self.positive_label)}',
             self.file_pointer
         )
         print_stdout_and_file(
-            '\t\t\tbinary precision on test: '
+            '\t\t\tprecision on test: '
             f'{precision_score(binary_y_test_actual, binary_y_test_predicted, pos_label=self.positive_label)}',
             self.file_pointer
         )
         print_stdout_and_file(
-            '\t\t\tbinary recall on test: '
+            '\t\t\trecall on test: '
             f'{recall_score(binary_y_test_actual, binary_y_test_predicted, pos_label=self.positive_label)}',
             self.file_pointer
         )
         print_stdout_and_file(
-            '\t\t\tbinary f1 on test: '
+            '\t\t\tf1 on test: '
             f'{f1_score(binary_y_test_actual, binary_y_test_predicted, pos_label=self.positive_label)}',
             self.file_pointer
         )
         print_stdout_and_file(
-            '\t\t\tbinary perplexity test: '
+            '\t\t\tperplexity test: '
             f'{perplexity(test_predictions_proba, binary_y_test_predicted, self.positive_label)}',
             self.file_pointer
         )
         print_stdout_and_file(
-            '\t\t\tbinary roc_auc_score test: '
+            '\t\t\troc_auc_score test: '
             f'{roc_auc_score(binary_y_test_actual, binary_y_test_predicted)}',
             self.file_pointer
         )
+        print_stdout_and_file("", self.file_pointer)
         plot_confusion_matrix(
             self.y_test.values,
             test_predictions,
             self.df_train[self.target_column].unique(),
-            f"multiclass_binary_{model_name}_average_confusion_matrix.png",
+            f"{model_name}_average_confusion_matrix.png",
         )
 
 
@@ -215,7 +159,6 @@ process = BuildMulticlassModelsSklearn(
         'multiclass_classification_models.txt'
     ),
     columns_to_drop=[
-        'ShyBirdsPercentage_Nearby_200',
         'NestID',
         'Year',
         'Laydate_first_egg',
@@ -243,6 +186,38 @@ process = BuildMulticlassModelsSklearn(
         'Propensity_0',
         'Propensity_17.5',
         'Propensity_19.5',
+
+
+        'x',
+        'y',
+        'z',
+
+        # 'Cuckoo_perch',
+        # 'nests_nearby_15',
+        # 'nests_nearby_30',
+        # 'nests_nearby_50',
+        # 'nests_nearby_100',
+        # 'nests_nearby_200',
+        # 'nests_nearby_300',
+        # 'closest_nest_distance',
+        # 'ClusterSize_15',
+        # 'ClusterSize_30',
+        # 'ClusterSize_50',
+        # 'ClusterSize_100',
+        # 'ClusterSize_200',
+        # 'ClusterSize_300',
+        # 'ShyBirdsPercentage_Clusters_15',
+        # 'ShyBirdsPercentage_Clusters_30',
+        # 'ShyBirdsPercentage_Clusters_50',
+        # 'ShyBirdsPercentage_Clusters_100',
+        # 'ShyBirdsPercentage_Clusters_200',
+        # 'ShyBirdsPercentage_Clusters_300',
+        # 'ShyBirdsPercentage_Nearby_15',
+        # 'ShyBirdsPercentage_Nearby_30',
+        # 'ShyBirdsPercentage_Nearby_50',
+        # 'ShyBirdsPercentage_Nearby_100',
+        # 'ShyBirdsPercentage_Nearby_200',
+        # 'ShyBirdsPercentage_Nearby_300',
     ],
     columns_to_scale=[
         # 'Cuckoo_perch',
