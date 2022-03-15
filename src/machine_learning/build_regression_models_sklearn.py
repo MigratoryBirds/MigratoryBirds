@@ -87,7 +87,7 @@ process = BuildRegressionModelsSklearn(
         ='resources/generated_data/nest_features_train.csv',
     input_test_csv_file_name
         ='resources/generated_data/nest_features_test.csv',
-    target_column='Rasps',
+    target_column='SnapsRasps',
     output_file_name=(
         'resources/machine_learning_results/'
         'regression_models.txt'
@@ -98,10 +98,13 @@ process = BuildRegressionModelsSklearn(
         'Laydate_first_egg',
         'Date_trial',
         'Days_from_LD',
-        # 'Rasps',
+        'Rasps',
         'Bill_snaps',
-        'SnapsRasps',
+        # 'SnapsRasps',
         'Propensity',
+        'Propensity_0',
+        'Propensity_17.5',
+        'Propensity_19.5',
         'Site',
         'lat',
         'long',
@@ -117,12 +120,12 @@ process = BuildRegressionModelsSklearn(
         'ClusterID_100',
         'ClusterID_200',
         'ClusterID_300',
-    ],
-    columns_to_scale=[
-        'Cuckoo_perch',
         'x',
         'y',
         'z',
+    ],
+    columns_to_scale=[
+        'Cuckoo_perch',
         'nests_nearby_15',
         'nests_nearby_30',
         'nests_nearby_50',
