@@ -83,7 +83,9 @@ def plot_confusion_matrix(actual, predicted, labels, fig_name):
     )
     plt.ylabel('Actual')
     plt.xlabel('Predicted')
-    plt.rcParams["figure.figsize"] = [15, 9]
+    fig = plt.gcf()
+    fig.set_size_inches(5, 4)
+    plt.tight_layout()
     plt.savefig(f'resources/machine_learning_results/{fig_name}')
     plt.clf()
 

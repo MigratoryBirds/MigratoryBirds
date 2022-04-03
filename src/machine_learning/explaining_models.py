@@ -19,7 +19,7 @@ forest_importances = pd.Series(
 std = np.std(model.feature_importances_)
 
 fig, ax = plt.subplots()
-forest_importances.plot.bar(yerr=std, ax=ax)
+forest_importances.plot.barh(yerr=std, ax=ax)
 ax.set_title("Feature importances using Mean Decrease Impurity (MDI)")
 ax.set_ylabel("Mean decrease in impurity")
 fig.tight_layout()
@@ -40,7 +40,7 @@ forest_importances = pd.Series(
 )
 
 fig, ax = plt.subplots()
-forest_importances.plot.bar(yerr=result.importances_std, ax=ax)
+forest_importances.plot.barh(yerr=result.importances_std, ax=ax)
 ax.set_title("Feature importances using permutation on full model")
 ax.set_ylabel("Mean accuracy decrease")
 fig.tight_layout()

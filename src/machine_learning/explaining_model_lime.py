@@ -31,10 +31,11 @@ explainer = lime.lime_tabular.LimeTabularExplainer(
     discretize_continuous=True
 )
 
-explained_idx = 9
+explained_idx = 49
 
 print(dict(test_x.iloc[explained_idx]))
 print(f'label: {test_y[explained_idx]}')
+print(f'Predicted: {model.predict([test_x.iloc[explained_idx]])}')
 
 exp = explainer.explain_instance(
     test_x.iloc[explained_idx],
