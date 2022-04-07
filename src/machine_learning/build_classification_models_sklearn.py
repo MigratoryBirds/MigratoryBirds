@@ -1,9 +1,6 @@
 """
 This class inherits from the build_models_sklearn_template to build
-multiclass models on the dataset using both the original dataset as well
-as the features after going through PCA
-
-When evaluating, it is also evaluated based on binary classification
+multiclass models on the dataset. The models are read from models.py
 """
 
 

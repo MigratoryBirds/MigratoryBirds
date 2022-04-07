@@ -1,3 +1,12 @@
+"""
+This class uses the LIME explainer to explain why the
+model has chosen a certain class and which features affected
+its decision the most in choosing this class for this specific
+data point. The explained_idx is the id of the data point within
+the test set
+"""
+
+
 import sys
 sys.path.append('src')
 import lime.lime_tabular
@@ -6,6 +15,8 @@ import joblib
 import pandas as pd
 from matplotlib import pyplot as plt
 from machine_learning.utils import extract_target_feature
+
+explained_idx = 49
 
 model: sklearn.tree.DecisionTreeClassifier = joblib.load(
     'resources/machine_learning_results/models/BalancedDecisionTree'
@@ -30,8 +41,6 @@ explainer = lime.lime_tabular.LimeTabularExplainer(
     class_names=model.classes_,
     discretize_continuous=True
 )
-
-explained_idx = 49
 
 print(dict(test_x.iloc[explained_idx]))
 print(f'label: {test_y[explained_idx]}')

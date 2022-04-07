@@ -1,5 +1,6 @@
 """
 This module contains general mathematical helper functions
+used within the codebase
 """
 
 import numpy as np

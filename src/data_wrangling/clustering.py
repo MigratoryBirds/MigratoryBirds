@@ -4,7 +4,11 @@ distances from one another.
 
 We use a custom clustering algorithm where we start from one point and
 cluster all the points next to it together, then add the points which are
-next to all the points (recursively) to the same cluster.
+next to all the points (recursively) to the same cluster. We found later
+that this method is called DBSCAN
+
+If two clusters from different years have a centroid close to one another
+they will have the same ID
 
 Source for converting longitude and latitude to x, y, z coordinates:
 https://stackoverflow.com/questions/1185408/converting-from-longitude-latitude-to-cartesian-coordinates

@@ -1,6 +1,7 @@
 """
 This script generates a csv with information regarding nearby nests
-for each nest, as well as the distance to the closest nest.
+for each nest, as well as the distance to the closest nest. These
+nearby nests are the direct neighbours
 """
 
 import sys

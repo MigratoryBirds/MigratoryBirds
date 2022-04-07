@@ -1,5 +1,7 @@
 """
-Useful functions to clean up the code for building models
+Useful functions to clean up the code for building models.
+These functions mostly relate to machine learning/data science
+procedures
 """
 
 from matplotlib import pyplot as plt

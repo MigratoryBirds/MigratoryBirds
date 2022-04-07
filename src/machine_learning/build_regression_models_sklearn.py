@@ -1,9 +1,7 @@
 """
 This class inherits from the build_models_sklearn_template to build
-regression models on the dataset using both the original dataset as well
-as the features after going through PCA
-
-When evaluating, it is also evaluated based on binary classification
+regression models on the dataset. The target variable can be Snaps,
+Rasps or SnapsRasps
 """
 
 

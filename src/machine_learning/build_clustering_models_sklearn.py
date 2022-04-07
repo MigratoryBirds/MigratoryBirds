@@ -1,9 +1,11 @@
 """
-This class inherits from the build_models_sklearn_template to build
-unsupervised models on the dataset using both the original dataset as well
-as the features after going through PCA
+This class inherits BuildModelsSklearnTemplate to build unsupervised
+models to split the data into 2 in order to try to find patterns and
+different splits in the dataset which supervised learning may not
+have been able to capture
 
-When evaluating, it is also evaluated based on binary classification
+This class tries to find a better propensity value than the one
+provided by the researchers, which was 20
 """
 
 

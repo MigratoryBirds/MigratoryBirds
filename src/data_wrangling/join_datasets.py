@@ -1,3 +1,10 @@
+"""
+Takes datasets from different csv files generated previously
+and joins them together into a csv file called
+joined_datasets.csv
+"""
+
+
 import pandas as pd
 
 dataframe_mobbing_1 = pd.read_csv(

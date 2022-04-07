@@ -1,3 +1,9 @@
+"""
+This module uses both MDI and PIMP to explain feature importance
+for the given decision tree. The model is read from disk
+"""
+
+
 import sys
 sys.path.append('src')
 import numpy as np

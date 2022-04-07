@@ -1,6 +1,7 @@
 """
 Join multiple csv files to get all the information about a nest
-into a single big csv file
+into a single big csv file. The ShyBirdsPercentage is also
+calculated within this file
 """
 
 import sys
