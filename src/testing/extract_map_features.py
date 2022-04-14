@@ -1,9 +1,9 @@
 """
-Testing the feature extraction from the maps programmatically
+Testing the feature extraction from the maps programmatically.
+
 """
 
 import pandas as pd
-import numpy as np
 import requests
 import json
 

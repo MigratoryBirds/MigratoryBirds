@@ -1,6 +1,7 @@
 """
-Make csv file where the differences between the years per site is fast to see at once.
-In progress...
+  Helper sript which creates a dataframe containing a summary of nests in the sites.
+  Return dataframe containing number of nests, aggressive and shy birds
+  for each site and for each year separately
 """
 import sys
 sys.path.append('src')
@@ -17,17 +18,22 @@ def create_site_diffs_data():
     propensities = []
     shyness = []
     no_data = []
-    max_time_between_trial_nest_found = ""
-    mean_time_between_trial_nest_found = ""
-    min_time_between_trial_nest_found =""
     for site in sites:
-      all = len(df_location[(df_location.Year==year) & (df_location.Site.str.strip()==site)])
+      all = (len(df_location[(df_location.Year==year)
+        & (df_location.Site.str.strip()==site)])
+      )
       sizes.append(all)
       shy = -1
       aggressive = -1
       if site in df_general[df_general.Year==year].Site.str.strip().unique():
-        aggressive = len(df_general[(df_general.Year==year) & (df_general.Site==site) & (df_general.Propensity==1)])
-        shy = len(df_general[(df_general.Year==year) & (df_general.Site==site) & (df_general.Propensity==0)])
+        aggressive = (len(df_general[(df_general.Year==year) 
+          & (df_general.Site==site)
+          & (df_general.Propensity==1)])
+        )
+        shy = (len(df_general[(df_general.Year==year)
+          & (df_general.Site==site)
+          & (df_general.Propensity==0)])
+        )
       propensities.append(aggressive)
       shyness.append(shy)
       if shy < 0:

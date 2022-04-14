@@ -1,5 +1,6 @@
-""" Purpose of this script is to check the sites which are only mentioned in one of the years.
-    The cases __nests with data__ and __all nests__ are considered separately.
+""" 
+This script checks the sites which are only mentioned in one of the years.
+The cases __nests with data__ and __all nests__ are considered separately.
 """
 import pandas as pd
 
