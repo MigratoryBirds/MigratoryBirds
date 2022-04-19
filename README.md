@@ -9,12 +9,14 @@ TODO (or into the requirements.txt file?)
 * numpy
 * pandas
 * matplotlib
-* seaborn
-* contextily
-* pointpats
+* [seaborn](https://seaborn.pydata.org/installing.html)
+* [pointpats](https://github.com/pysal/pysal#installation)
+* [contextily](https://contextily.readthedocs.io/en/latest/index.html#installation)
 * [Folium](https://python-visualization.github.io/folium/installing.html)
 * [Plotly](https://plotly.com/python/getting-started/)
+* (Jupyter) [notebook](https://jupyter.org/install)
 
+[Anaconda](https://www.anaconda.com/products/distribution) can be installed and the code and the notbooks can be executed in conda environment. For example, numpy, pandas and matplotlib are already inluded in Anaconda.
 
 ## Instructions for running
 
@@ -42,5 +44,7 @@ Before running the notebooks data files must be created. If not done in machine 
 
 * `$ python3 src/data_wrangling/join_datasets.py`
 * `$ python src/data_wrangling/clustering.py`
-
-TODO
+Then go to *visualisation* folder
+* `cd src/visualisation/`
+* Open Visual Studio Code and navigate there to the location `src/visualisation/` and open the chosen notebook file. Choose the kernel by clicking `Select Kernel` on the right corner and choose one before running the code. If you have installed conda, you may want to choose kernel that name starts with `base`.
+* The notebooks can also be executed on the server. Open the notebook server with command `$ jupyter notebook` that opens the folder into a browser and you can choose the wanted notebook. More info can be found [here](https://docs.jupyter.org/en/latest/running.html)
