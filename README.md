@@ -5,9 +5,9 @@ Project for DSP2022 - Data Science Project I - Detecting micro and macro spatial
 * Python version python3.9 or higher
 
 ## Libraries
-TODO (or into the requirements.txt file?)
 * numpy
 * pandas
+* sklearn
 * matplotlib
 * [seaborn](https://seaborn.pydata.org/installing.html)
 * [pointpats](https://github.com/pysal/pysal#installation)
