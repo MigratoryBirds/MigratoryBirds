@@ -15,8 +15,8 @@ def geographic_to_cartesian(
 ) -> pd.DataFrame:
     cos_lat = np.cos(np.radians(lat))
     cos_lon = np.cos(np.radians(lon))
-    sin_lat = np.sin(np.radians(lon))
-    sin_lon = np.sin(np.radians(lat))
+    sin_lon = np.sin(np.radians(lon))
+    sin_lat = np.sin(np.radians(lat))
     x = earth_radius * cos_lat * cos_lon
     y = earth_radius * cos_lat * sin_lon
     z = earth_radius * sin_lat

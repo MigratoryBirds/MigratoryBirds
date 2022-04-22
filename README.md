@@ -20,7 +20,7 @@ Project for DSP2022 - Data Science Project I - Detecting micro and macro spatial
 
 ## Instructions for running
 
-### Machine Learning Pipeling
+### Machine Learning Pipeline
 
 1. Put original data csv files in resources/data/original
 1. Run `python3 src/data_wrangling/join_datasets.py` to join the original 2 datasets together by the NestID

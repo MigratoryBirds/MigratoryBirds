@@ -1,6 +1,6 @@
 """
 This class inherits from the build_models_sklearn_template to build
-multiclass models on the dataset. The models are read from models.py
+classification models on the dataset. The models are read from models.py
 """
 
 
@@ -16,7 +16,7 @@ from sklearn.decomposition import PCA
 from models import classification_models as models_dict
 
 
-class BuildMulticlassModelsSklearn(BuildModelsSklearnTemplate):
+class BuildClassificationModelsSklearn(BuildModelsSklearnTemplate):
     def __init__(
         self,
         models: dict,
@@ -144,7 +144,7 @@ class BuildMulticlassModelsSklearn(BuildModelsSklearnTemplate):
         )
 
 
-process = BuildMulticlassModelsSklearn(
+process = BuildClassificationModelsSklearn(
     models_dict,
     input_train_csv_file_name
         ='resources/generated_data/nest_features_train.csv',
@@ -153,7 +153,7 @@ process = BuildMulticlassModelsSklearn(
     target_column='Propensity',
     output_file_name=(
         'resources/machine_learning_results/'
-        'multiclass_classification_models.txt'
+        'classification_models.txt'
     ),
     columns_to_drop=[
         'NestID',
