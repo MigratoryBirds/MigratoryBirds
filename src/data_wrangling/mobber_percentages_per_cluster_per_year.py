@@ -197,7 +197,7 @@ def draw_shy(dfs_year,year,ks_year):
     j = 0
 
     while j < 12:
-        df = dfs_2019[j//2]
+        df = dfs_year[j//2]
         n = len(df)
 
         p_shy = [0] * n
