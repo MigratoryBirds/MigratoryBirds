@@ -1,3 +1,8 @@
+"""
+This script produces six images, a shy and aggressive percentage distribution for each year. The images also include
+control plots, which represent the percentages if the nesting behavior is random.
+"""
+
 import numpy as np
 import pandas as pd
 import numpy.random as npr

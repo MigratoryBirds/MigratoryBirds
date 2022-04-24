@@ -1,3 +1,13 @@
+"""
+This script produces six plots and an excel sheet with the amount of certain types of nests each year and their percentages. 
+Two of the plots are presenting percentages of aggressive and shy birds in clusters 
+with the no data nests classified randomly either as aggressive or shy with weighted likelihood or 50-50 likelihood.
+One presents the percentages of all the nest types (aggressive, shy and no data) in the plot. 
+Three remaining plots are control plots for these, showing the percentages in each cluster
+when the nesting behavior is considered random. 
+"""
+
+
 import numpy as np
 import numpy.random as npr
 import pandas as pd
