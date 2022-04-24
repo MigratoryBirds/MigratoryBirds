@@ -126,15 +126,15 @@ ks_2021 = shy_2021 / (agg_2021 + shy_2021 + nd_2021)
 
 def draw_aggressive(dfs_year,year,ka_year):
 
-    fontsize = 15
+    fontsize = 35
     plt.rcParams.update({'font.size': fontsize})
 
-    fig, ax = plt.subplots(12,figsize=(15,45))
+    fig, ax = plt.subplots(6,figsize=(15,45))
     j = 0
 
 
 
-    while j < 12:
+    while j < 6:
         df = dfs_year[j//2]
         n = len(df)
         p_agg = [0] * n
@@ -153,18 +153,14 @@ def draw_aggressive(dfs_year,year,ka_year):
             p_agg[i] = binom.pmf(df.at[i,"aggressive"],n_temp,ka_year)
         
         colors = ['tomato']
-        ax[j].hist(x,histtype='bar', color=colors, label=["aggressive"])
-        ax[j].legend(prop={'size': fontsize})
-        ax[j].set_title('bars with legend')
+        ax[j].hist(x,histtype='bar', color=colors)
     
         ax[j].set_title(clusterIDs[j//2])
 
         ax[j].set_xlabel('percentage')
         ax[j].set_ylabel('frequency')
     
-        ax[j+1].hist(y,histtype='bar', color=colors, label=["aggressive"])
-        ax[j+1].legend(prop={'size': fontsize})
-        ax[j+1].set_title('bars with legend')
+        ax[j+1].hist(y,histtype='bar', color=colors)
     
         ax[j+1].set_title("Expectations for " + clusterIDs[j//2])
     
@@ -174,8 +170,8 @@ def draw_aggressive(dfs_year,year,ka_year):
         j = j + 2
     
     title = 'Aggressive percentages for ' + str(year)
-    fig.suptitle(title, fontsize=30)
-    fig.tight_layout(pad=2.5)
+    fig.suptitle(title, fontsize=45)
+    fig.tight_layout(pad=1)
     fig.patch.set_alpha(1)
     name = "resources\\visualisations\\plots\\percentage_aggressive_" + str(year) + ".png"
     fig.savefig(name, transparent=False)
@@ -190,13 +186,13 @@ draw_aggressive(dfs_2021,"2021",ka_2021)
 
 def draw_shy(dfs_year,year,ks_year):
 
-    fontsize = 15
+    fontsize = 35
     plt.rcParams.update({'font.size': fontsize})
 
-    fig, ax = plt.subplots(12,figsize=(15,45))
+    fig, ax = plt.subplots(6,figsize=(15,45))
     j = 0
 
-    while j < 12:
+    while j < 6:
         df = dfs_year[j//2]
         n = len(df)
 
@@ -215,18 +211,14 @@ def draw_shy(dfs_year,year,ks_year):
             p_shy[i] = binom.pmf(df.at[i,"shy"],n_temp,ks_year)
         
         colors = ['cornflowerblue']
-        ax[j].hist(x,histtype='bar', color=colors, label=["shy"])
-        ax[j].legend(prop={'size': fontsize})
-        ax[j].set_title('bars with legend')
+        ax[j].hist(x,histtype='bar', color=colors)
     
         ax[j].set_title(clusterIDs[j//2])
 
         ax[j].set_xlabel('percentage')
         ax[j].set_ylabel('frequency')
     
-        ax[j+1].hist(y,histtype='bar', color=colors, label=["shy"])
-        ax[j+1].legend(prop={'size': fontsize})
-        ax[j+1].set_title('bars with legend')
+        ax[j+1].hist(y,histtype='bar', color=colors)
     
         ax[j+1].set_title("Expectations for " + clusterIDs[j//2])
     
@@ -236,8 +228,8 @@ def draw_shy(dfs_year,year,ks_year):
         j = j + 2
     
     title = 'Shy percentages for ' + str(year)
-    fig.suptitle(title, fontsize=30)
-    fig.tight_layout(pad=2.5)
+    fig.suptitle(title, fontsize=45)
+    fig.tight_layout(pad=1)
     fig.patch.set_alpha(1)
     name = "resources\\visualisations\\plots\\percentage_shy_" + str(year) + ".png"
     fig.savefig(name, transparent=False)
