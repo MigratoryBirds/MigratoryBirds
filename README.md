@@ -39,6 +39,11 @@ Project for DSP2022 - Data Science Project I - Detecting micro and macro spatial
 * Run `python3 src/machine_learning/explaining_models.py` to run MPI and PIMP for feature importance over the decision trees built by the classification script
 * Run `python3 src/machine_learning/explaining_model_lime.py` to run LIME for explaining individual predictions
 
+### Drawing plots
+
+* Run `python3 src/data_wrangling/mobber_percentages_per_cluster.py`to draw plots for percentages of shy and aggressive birds in clusters.
+*  Run `python3 src/data_wrangling/mobber_percentages_per_cluster_per_year.py`to draw plots for percentages of shy and aggressive birds in clusters for each year.
+
 Please note that all scripts must be run from the root repository. For example, if we want to run the clustering phase, we would run `python src/data_wrangling/clustering.py` and not `python3 data_wrangling/clustering.py`
 
 ### Jupyter notebooks
