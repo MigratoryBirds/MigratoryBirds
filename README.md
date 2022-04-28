@@ -46,6 +46,12 @@ Project for DSP2022 - Data Science Project I - Detecting micro and macro spatial
 
 Please note that all scripts must be run from the root repository. For example, if we want to run the clustering phase, we would run `python src/data_wrangling/clustering.py` and not `python3 data_wrangling/clustering.py`
 
+### Calculating the Join Counts
+
+* Run `python3 src/analysis/analysis.py` to draw the histograms with the real values for each year, as well as print the values
+* `autocorrelation.py` contains the functions needed for `analysis.py` to run
+* The distance threshold may be edited in `analysis.py`
+
 ### Jupyter notebooks
 
 Before running the notebooks data files must be created. If not done in machine learning part run the following commands
