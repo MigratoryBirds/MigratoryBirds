@@ -1,4 +1,5 @@
-from tabnanny import check
+""" This file contains the functions needed to perform the join count analysis. 
+"""
 import pandas as pd
 import numpy as np
 import geopy.distance
