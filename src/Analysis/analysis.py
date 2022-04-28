@@ -17,16 +17,18 @@ df19.index = range(df19.shape[0])
 df20.index = range(df20.shape[0])
 df21.index = range(df21.shape[0])
 
+# IMPORTANT NOTE: Please make sure that the distance threshold for the real join counts and the random join counts is the same before comparing.
+
 # Real Join Counts
-JC19 = join_counts(df19,15)
-JC20 = join_counts(df20,15)
-JC21 = join_counts(df21,15)
+JC19 = join_counts(df19,dis_threshold = 50)
+JC20 = join_counts(df20,50)
+JC21 = join_counts(df21,50)
 print("2019 Join Counts: ",JC19,"\n2020 Join Counts: ",JC20,"\n2021 Join Counts: ",JC21)
 
 # Randomized Join Counts
-rand_JC19 = random_join_counts(df19,dis_threshold = 15,repetitions = 500)
-rand_JC20 = random_join_counts(df20,15,500)
-rand_JC21 = random_join_counts(df21,15,500)
+rand_JC19 = random_join_counts(df19,dis_threshold = 50,repetitions = 500)
+rand_JC20 = random_join_counts(df20,50,500)
+rand_JC21 = random_join_counts(df21,50,500)
 
 def make_hist(list,bins,line_value,x_label):
     """ makes histogram with the x label being the number of join-counts in a simulation of certain type
@@ -36,7 +38,6 @@ def make_hist(list,bins,line_value,x_label):
     plt.ylabel('Counts')
     plt.xlabel(x_label)
     plt.axvline(x=line_value, color='r', linestyle='dashed', linewidth=2)
-    #plt.show()
 
 fig=plt.figure()
 
