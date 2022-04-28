@@ -1,3 +1,5 @@
+""" This file uses functions from autocorrelation.py to generate the real and random join counts
+"""
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
