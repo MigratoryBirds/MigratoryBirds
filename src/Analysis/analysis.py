@@ -61,12 +61,3 @@ make_hist(rand_JC21['AS'],bins = 10,line_value = JC21['AS'],x_label = 'AS 21')
 
 fig.tight_layout()
 plt.show()
-
-
-
-# print()
-
-# print("randomized join counts")
-# print("2019: ",random_join_counts(df19,50,5))
-# print("2020: ",random_join_counts(df20,50,5))
-# print("2021: ",random_join_counts(df21,50,5))
