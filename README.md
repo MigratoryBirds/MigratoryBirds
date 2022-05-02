@@ -58,9 +58,10 @@ Before running the notebooks data files must be created. If not done in machine 
 
 * `$ python3 src/data_wrangling/join_datasets.py`
 * `$ python src/data_wrangling/clustering.py`
+
 Then go to *visualisation* folder
 * `cd src/visualisation/`
 * Open Visual Studio Code and navigate there to the location `src/visualisation/` and open the chosen notebook file. Choose the kernel by clicking `Select Kernel` on the right corner and choose one before running the code. If you have installed conda, you may want to choose kernel that name starts with `base`.
-* The notebooks can also be executed on the server. Open the notebook server with command `$ jupyter notebook` that opens the folder into a browser. You can then choose the notebook you want to look more closely. More info can be found [here](https://docs.jupyter.org/en/latest/running.html)
+* The notebooks can also be executed on the server. Open the notebook server with command `$ jupyter notebook` that opens the folder into a browser. You can then choose the notebook you want to look more closely. More info can be found [here](https://docs.jupyter.org/en/latest/running.html).
 
 The code for map clustering with the K-means algorithm is also written in a python notebook. To open the notebook and run it follow the same instruction as for running visualisations.
