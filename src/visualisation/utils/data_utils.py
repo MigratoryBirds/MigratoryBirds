@@ -1,9 +1,9 @@
 """
-This script reads data into different dataframes for map and data visualisation tasks.
-Returns:
-df_general: nesting behaviour data for each years
-df_clusters: nests cluster ids for each cluster with different distances (15,30,50,100,200,300)
-df_location: all nests with their location data
+    This script reads data into different dataframes for map and data visualisation tasks.
+    Returns:
+    df_general: nesting behaviour data for each years
+    df_clusters: nests cluster ids for each cluster with different distances (15,30,50,100,200,300)
+    df_location: all nests with their location data
 """
 import pandas as pd
 
